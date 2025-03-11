@@ -1,0 +1,52 @@
+import 'package:flutter/material.dart';
+
+class LevelDropDown extends StatefulWidget {
+  const LevelDropDown({super.key});
+
+  @override
+  State<LevelDropDown> createState() => _LevelDropDownState();
+}
+
+class _LevelDropDownState extends State<LevelDropDown> {
+  int? selectedValue;
+  List<int> levels = [1, 2, 3, 4];
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownMenu<int>(
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      label: Padding(
+          padding: const EdgeInsets.only(left: 10), child: Text('Level')),
+      textStyle: TextStyle(
+        color: Colors.black,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
+      menuStyle: MenuStyle(
+        backgroundColor: WidgetStateProperty.all(Colors.white),
+        surfaceTintColor: WidgetStateProperty.all(Colors.transparent),
+        elevation: WidgetStateProperty.all(4),
+        shape: WidgetStateProperty.all(RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        )),
+      ),
+      width: 150,
+      initialSelection: selectedValue,
+      onSelected: (newValue) {
+        setState(() {
+          selectedValue = newValue;
+        });
+      },
+      dropdownMenuEntries: levels.map((int level) {
+        return DropdownMenuEntry<int>(
+          value: level,
+          label: level.toString(),
+        );
+      }).toList(),
+    );
+  }
+}

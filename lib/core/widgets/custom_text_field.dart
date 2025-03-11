@@ -18,7 +18,11 @@ class CustomTextField extends StatelessWidget {
         }
         return null;
       },
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: label == "Email"
+          ? TextInputType.emailAddress
+          : label == 'ID'
+              ? TextInputType.number
+              : TextInputType.text,
       decoration: InputDecoration(
         prefixIcon: Icon(
           icon,

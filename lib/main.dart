@@ -1,4 +1,4 @@
-import 'package:fcai_app/features/authentication/view/login_view.dart';
+import 'package:fcai_app/fcai_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,16 +10,4 @@ void main() {
     statusBarIconBrightness: Brightness.dark,
   ));
   runApp(const FCAIApp());
-}
-
-class FCAIApp extends StatelessWidget {
-  const FCAIApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const LoginView(),
-    );
-  }
 }
