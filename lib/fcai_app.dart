@@ -1,4 +1,4 @@
-import 'package:fcai_app/features/user_profile/view/user_profile.dart';
+import 'package:fcai_app/features/authentication/view/login_view.dart';
 import 'package:flutter/material.dart';
 
 class FCAIApp extends StatelessWidget {
@@ -8,7 +8,7 @@ class FCAIApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const UserProfile(),
+      home: const LoginView(),
     );
   }
 }

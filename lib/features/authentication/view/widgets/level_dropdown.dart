@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class LevelDropDown extends StatefulWidget {
-  const LevelDropDown({super.key});
+  const LevelDropDown({super.key, this.onSelected});
+
+  final void Function(int?)? onSelected;
 
   @override
   State<LevelDropDown> createState() => _LevelDropDownState();
@@ -36,11 +38,7 @@ class _LevelDropDownState extends State<LevelDropDown> {
       ),
       width: 150,
       initialSelection: selectedValue,
-      onSelected: (newValue) {
-        setState(() {
-          selectedValue = newValue;
-        });
-      },
+      onSelected: widget.onSelected,
       dropdownMenuEntries: levels.map((int level) {
         return DropdownMenuEntry<int>(
           value: level,

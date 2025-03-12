@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class PasswordTextField extends StatefulWidget {
-  const PasswordTextField({super.key, required this.label});
+  const PasswordTextField(
+      {super.key, required this.label, required this.controller, this.validator});
   final String label;
+  final TextEditingController controller;
+  final String? Function(String?)? validator;
 
   @override
   State<PasswordTextField> createState() => _PasswordTextFieldState();
@@ -14,12 +17,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your password';
-        }
-        return null;
-      },
+      controller: widget.controller,
+      validator: widget.validator,
       obscureText: obscureText,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(

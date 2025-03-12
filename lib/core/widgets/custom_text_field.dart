@@ -5,19 +5,19 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.label,
     required this.icon,
+    required this.controller,
+    this.validator,
   });
   final String label;
   final IconData icon;
+  final TextEditingController controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your $label';
-        }
-        return null;
-      },
+      controller: controller,
+      validator: validator,
       keyboardType: label == "Email"
           ? TextInputType.emailAddress
           : label == 'ID'
