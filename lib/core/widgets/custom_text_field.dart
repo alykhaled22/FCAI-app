@@ -6,21 +6,23 @@ class CustomTextField extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.controller,
-    this.validator,
+    this.validator, required this.readOnly,
   });
   final String label;
   final IconData icon;
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly,
       controller: controller,
       validator: validator,
       keyboardType: label == "Email"
           ? TextInputType.emailAddress
-          : label == 'ID'
+          : label == 'Student ID'
               ? TextInputType.number
               : TextInputType.text,
       decoration: InputDecoration(

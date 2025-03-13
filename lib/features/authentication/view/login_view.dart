@@ -5,6 +5,7 @@ import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/features/authentication/view/sign_up_view.dart';
 import 'package:fcai_app/features/authentication/view/widgets/password_text_field.dart';
 import 'package:fcai_app/features/authentication/view/widgets/swap_auth.dart';
+import 'package:fcai_app/features/user_profile/view/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -27,6 +28,7 @@ class _LoginViewState extends State<LoginView> {
       child: Scaffold(
         backgroundColor: Color(0xffF5F5F5),
         body: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 60),
             child: Form(
@@ -49,6 +51,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   SizedBox(height: 20),
                   CustomTextField(
+                    readOnly: false,
                     controller: emailController,
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -99,10 +102,12 @@ class _LoginViewState extends State<LoginView> {
                             const SnackBar(content: Text("Login successful!")),
                           );
 
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => const UserProfile()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserProfile(
+                                        userModel: user,
+                                      )));
                         }
                       },
                       color: 0xff247CFF),

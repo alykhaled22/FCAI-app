@@ -36,6 +36,7 @@ class _SignUpViewState extends State<SignUpView> {
         child: Scaffold(
       backgroundColor: Color(0xffF5F5F5),
       body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 30),
           child: Form(
@@ -54,6 +55,7 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 SizedBox(height: 30),
                 CustomTextField(
+                  readOnly: false,
                   label: "Full Name",
                   icon: Icons.person,
                   controller: nameController,
@@ -72,6 +74,7 @@ class _SignUpViewState extends State<SignUpView> {
                 }),
                 SizedBox(height: 17),
                 CustomTextField(
+                    readOnly: false,
                     label: "Student ID",
                     icon: Icons.confirmation_number,
                     controller: idController,
@@ -95,14 +98,14 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 SizedBox(height: 17),
                 CustomTextField(
+                  readOnly: false,
                   label: "FCAI Email",
                   icon: Icons.email,
                   controller: emailController,
                   validator: (value) {
                     if (value!.isEmpty) return "This field is required";
 
-                    final emailRegex =
-                        RegExp(r'^(\d+)@stud\.fci-cu\.edu\.eg$');
+                    final emailRegex = RegExp(r'^(\d+)@stud\.fci-cu\.edu\.eg$');
                     final match = emailRegex.firstMatch(value);
 
                     if (match == null) {
@@ -147,7 +150,7 @@ class _SignUpViewState extends State<SignUpView> {
                     label: "Sign up",
                     onPressed: () async {
                       if (!formKey.currentState!.validate()) return;
-                      
+
                       Box<UserModel> box;
 
                       if (!hiveService.isBoxOpen(boxName: "user")) {
