@@ -2,7 +2,11 @@ import 'package:fcai_app/features/user_profile/view/widgets/custom_icon_button.d
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
+  const CustomAppBar({super.key, required this.iconR, required this.iconL, required this.onPressedR, required this.onPressedL});
+  final IconData iconR;
+  final IconData iconL;
+  final Function() onPressedR;
+  final Function() onPressedL;
 
   @override
   Widget build(BuildContext context) {
@@ -10,13 +14,12 @@ class CustomAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomIconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icons.logout_outlined),
+            onPressed: onPressedL,
+            icon: iconL),
         CustomIconButton(
-          onPressed: () {},
-          icon: Icons.edit_note_rounded,
+          onPressed: onPressedR,
+          icon: iconR,
+          // icon: Icons.edit_note_rounded,
         ),
       ],
     );

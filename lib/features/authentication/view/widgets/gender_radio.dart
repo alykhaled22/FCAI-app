@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 
-class GenderRadio extends StatefulWidget {
-  const GenderRadio({super.key, this.onChanged});
+class GenderRadio extends StatelessWidget {
+  const GenderRadio({super.key, required this.onChanged, required this.gender});
 
-  final void Function(String?)? onChanged;
-
-  @override
-  State<GenderRadio> createState() => _GenderRadioState();
-}
-
-class _GenderRadioState extends State<GenderRadio> {
-  String? selectedGender; // Variable to store selected value
+  final void Function(String?) onChanged;
+  final String? gender;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +27,7 @@ class _GenderRadioState extends State<GenderRadio> {
     );
   }
 
-  Widget _buildGenderButton(String gender) {
+  Widget _buildGenderButton(String genderValue) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -41,26 +35,22 @@ class _GenderRadioState extends State<GenderRadio> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
       onPressed: () {
-        setState(() {
-          selectedGender = gender;
-        });
+        onChanged(genderValue);
       },
       child: Row(
         children: [
           Text(
-            gender,
+            genderValue,
             style: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
           ),
           const SizedBox(width: 5),
           Radio<String>(
-            value: gender,
-            groupValue: selectedGender,
+            value: genderValue,
+            groupValue: gender,
             toggleable: true,
             onChanged: (value) {
-              setState(() {
-                selectedGender = value;
-              });
+              onChanged(value); // Notify parent of change
             },
           ),
         ],

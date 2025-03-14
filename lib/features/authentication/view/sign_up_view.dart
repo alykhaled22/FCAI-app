@@ -59,30 +59,32 @@ class _SignUpViewState extends State<SignUpView> {
                   label: "Full Name",
                   icon: Icons.person,
                   controller: nameController,
-                  validator: (name) {
-                    if (name!.isEmpty) {
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return "This field is required";
                     }
                     return null;
                   },
                 ),
                 SizedBox(height: 17),
-                GenderRadio(onChanged: (value) {
-                  setState(() {
-                    selectedGender = value;
-                  });
-                }),
+                GenderRadio(
+                    gender: selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedGender = value;
+                      });
+                    }),
                 SizedBox(height: 17),
                 CustomTextField(
                     readOnly: false,
                     label: "Student ID",
                     icon: Icons.confirmation_number,
                     controller: idController,
-                    validator: (id) {
-                      if (id!.isEmpty) {
+                    validator: (value) {
+                      if (value!.isEmpty) {
                         return "This field is required";
                       }
-                      if (id.length != 8) {
+                      if (value.length != 8) {
                         return "Student ID must be 8 digits";
                       }
                       return null;
@@ -90,11 +92,13 @@ class _SignUpViewState extends State<SignUpView> {
                 SizedBox(height: 17),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: LevelDropDown(onSelected: (level) {
-                    setState(() {
-                      selectedLevel = level.toString();
-                    });
-                  }),
+                  child: LevelDropDown(
+                      initialLevel: int.tryParse(selectedLevel ?? ""),
+                      onSelected: (level) {
+                        setState(() {
+                          selectedLevel = level.toString();
+                        });
+                      }),
                 ),
                 SizedBox(height: 17),
                 CustomTextField(
@@ -109,7 +113,7 @@ class _SignUpViewState extends State<SignUpView> {
                     final match = emailRegex.firstMatch(value);
 
                     if (match == null) {
-                      return "Enter a valid FCAI email";
+                      return "Enter a valid FCAI email. ex:studentID@stud.fci-cu.edu.eg";
                     }
 
                     if (match.group(1) != idController.text) {
@@ -171,16 +175,15 @@ class _SignUpViewState extends State<SignUpView> {
                         name: nameController.text,
                         email: emailController.text,
                         password: passwordController.text,
-                        gender: selectedGender ?? "",
-                        level: selectedLevel ?? "",
-                        imageUrl: "",
+                        gender: selectedGender,
+                        level: selectedLevel,
                       );
 
                       await hiveService.putData(
                           box: box, key: emailController.text, value: user);
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("User signed up!")));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text("Signed up scuccessfully!")));
                       Navigator.pop(context);
                     },
                     color: 0xff247CFF),

@@ -78,6 +78,7 @@ class _LoginViewState extends State<LoginView> {
                       label: "Login",
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
+                          
                           Box<UserModel> box;
 
                           if (!hiveService.isBoxOpen(boxName: "user")) {
@@ -88,7 +89,6 @@ class _LoginViewState extends State<LoginView> {
 
                           UserModel? user = hiveService.getData(
                               box: box, key: emailController.text);
-
                           if (user == null ||
                               passwordController.text != user.password) {
                             ScaffoldMessenger.of(context).showSnackBar(
