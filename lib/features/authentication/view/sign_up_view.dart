@@ -2,9 +2,9 @@ import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
-import 'package:fcai_app/features/authentication/view/widgets/gender_radio.dart';
-import 'package:fcai_app/features/authentication/view/widgets/level_dropdown.dart';
-import 'package:fcai_app/features/authentication/view/widgets/password_text_field.dart';
+import 'package:fcai_app/core/widgets/gender_radio.dart';
+import 'package:fcai_app/core/widgets/level_dropdown.dart';
+import 'package:fcai_app/core/widgets/password_text_field.dart';
 import 'package:fcai_app/features/authentication/view/widgets/swap_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -38,7 +38,7 @@ class _SignUpViewState extends State<SignUpView> {
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20),
           child: Form(
             key: formKey,
             child: Column(
@@ -113,7 +113,7 @@ class _SignUpViewState extends State<SignUpView> {
                     final match = emailRegex.firstMatch(value);
 
                     if (match == null) {
-                      return "Enter a valid FCAI email. ex:studentID@stud.fci-cu.edu.eg";
+                      return "Enter a valid FCAI email. \nex:studentID@stud.fci-cu.edu.eg";
                     }
 
                     if (match.group(1) != idController.text) {
@@ -163,6 +163,8 @@ class _SignUpViewState extends State<SignUpView> {
                         box = Hive.box<UserModel>("user");
                       }
 
+                      if (!context.mounted) return;
+
                       if (box.containsKey(emailController.text)) {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                             content: Text(
@@ -181,6 +183,8 @@ class _SignUpViewState extends State<SignUpView> {
 
                       await hiveService.putData(
                           box: box, key: emailController.text, value: user);
+
+                      if (!context.mounted) return;
 
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text("Signed up scuccessfully!")));

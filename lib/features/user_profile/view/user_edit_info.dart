@@ -2,9 +2,8 @@ import 'dart:io';
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
-import 'package:fcai_app/features/authentication/view/widgets/gender_radio.dart';
-import 'package:fcai_app/features/authentication/view/widgets/level_dropdown.dart';
-import 'package:fcai_app/features/authentication/view/widgets/password_text_field.dart';
+import 'package:fcai_app/core/widgets/gender_radio.dart';
+import 'package:fcai_app/core/widgets/level_dropdown.dart';
 import 'package:fcai_app/features/user_profile/view/widgets/add_image_avatar.dart';
 import 'package:fcai_app/features/user_profile/view/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -35,13 +34,43 @@ class _UserEditInfoState extends State<UserEditInfo> {
   File? image;
   final picker = ImagePicker();
 
-  Future getImage() async {
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedImage != null) {
-        image = File(pickedImage.path);
-      }
-    });
+  Future<void> pickImage(ImageSource source) async {
+    final XFile? pickedFile = await picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        image = File(pickedFile.path);
+      });
+    }
+  }
+
+  void showImagePicker() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.camera),
+                title: Text('Take a Photo'),
+                onTap: () {
+                  Navigator.pop(context);
+                  pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.pop(context);
+                  pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -101,25 +130,25 @@ class _UserEditInfoState extends State<UserEditInfo> {
                           } else {
                             box = Hive.box<UserModel>("user");
                           }
-                          await hiveService.openBox(
-                              boxName: 'userBox'); // Ensure box is open
+
                           await hiveService.putData(
                               box: box,
                               key: updatedUser.email,
                               value: updatedUser);
 
+                          if (!context.mounted) return;
+
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text("Edited scuccessfully!")));
-                          Navigator.pop(
-                              context, updatedUser); // Return updated data
+                          Navigator.pop(context, updatedUser);
                         }
                       },
                     ),
                     AddImageAvatar(
                       image: image != null ? image!.path : "",
                       userModel: widget.userModel,
-                      onTap: getImage,
+                      onTap: showImagePicker,
                     ),
                     const SizedBox(height: 40),
                     CustomTextField(
@@ -169,38 +198,6 @@ class _UserEditInfoState extends State<UserEditInfo> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
-                    PasswordTextField(
-                      validator: (value) {
-                        if (value != null && value.isNotEmpty) {
-                          if (value.length < 8) {
-                            return "Password must be at least 8 characters";
-                          }
-                          if (!RegExp(r'^(?=.*\d).{8,}$').hasMatch(value)) {
-                            return "Password must contain at least one number";
-                          }
-                        }
-                        return null;
-                      },
-                      label: "Change password",
-                      controller: passwordController,
-                    ),
-                    SizedBox(height: 20),
-                    PasswordTextField(
-                        validator: (value) {
-                          if (value != null && value.isNotEmpty) {
-                            if (value.isEmpty &&
-                                passwordController.text.isNotEmpty) {
-                              return "This field is required";
-                            }
-                            if (value != passwordController.text) {
-                              return "Passwords do not match";
-                            }
-                          }
-                          return null;
-                        },
-                        label: "Confirm password",
-                        controller: confirmPasswordController),
                   ],
                 ),
               )),

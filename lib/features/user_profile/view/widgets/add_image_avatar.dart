@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/features/user_profile/view/widgets/image_avatar.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +15,7 @@ class AddImageAvatar extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         ImageAvatar(
-            image: image, gender: userModel.imageUrl ?? userModel.gender ?? ""),
+            image: image, gender:userModel.gender ?? ""),
         Positioned(
           bottom: 5,
           right: 5,

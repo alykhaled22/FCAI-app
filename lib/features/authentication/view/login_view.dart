@@ -3,7 +3,7 @@ import 'package:fcai_app/core/services/hive_service.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/features/authentication/view/sign_up_view.dart';
-import 'package:fcai_app/features/authentication/view/widgets/password_text_field.dart';
+import 'package:fcai_app/core/widgets/password_text_field.dart';
 import 'package:fcai_app/features/authentication/view/widgets/swap_auth.dart';
 import 'package:fcai_app/features/user_profile/view/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +78,6 @@ class _LoginViewState extends State<LoginView> {
                       label: "Login",
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          
                           Box<UserModel> box;
 
                           if (!hiveService.isBoxOpen(boxName: "user")) {
@@ -89,14 +88,18 @@ class _LoginViewState extends State<LoginView> {
 
                           UserModel? user = hiveService.getData(
                               box: box, key: emailController.text);
+
                           if (user == null ||
                               passwordController.text != user.password) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Invalid email or password")),
-                            );
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Invalid email or password")),
+                              );
+                            }
                             return;
                           }
+                          if (!context.mounted) return;
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text("Login successful!")),

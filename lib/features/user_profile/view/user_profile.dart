@@ -1,6 +1,6 @@
-import 'dart:io';
-
 import 'package:fcai_app/core/models/user_model.dart';
+import 'package:fcai_app/core/widgets/custom_button.dart';
+import 'package:fcai_app/features/user_profile/view/change_password.dart';
 import 'package:fcai_app/features/user_profile/view/user_edit_info.dart';
 import 'package:fcai_app/features/user_profile/view/widgets/custom_app_bar.dart';
 import 'package:fcai_app/features/user_profile/view/widgets/image_avatar.dart';
@@ -36,28 +36,27 @@ class _UserProfileState extends State<UserProfile> {
             child: Column(
               children: [
                 CustomAppBar(
-                  iconL: Icons.logout_outlined,
-                  iconR: Icons.edit_note_rounded,
-                  onPressedL: () {
-                    Navigator.pop(context);
-                  },
-                  onPressedR: () async {
-                    final updatedUser = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => UserEditInfo(
-                          userModel: userModel,
+                    iconL: Icons.logout_outlined,
+                    iconR: Icons.edit_note_rounded,
+                    onPressedL: () {
+                      Navigator.pop(context);
+                    },
+                    onPressedR: () async {
+                      final updatedUser = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserEditInfo(
+                            userModel: userModel,
+                          ),
                         ),
-                      ),
-                    );
+                      );
 
-                    if (updatedUser is UserModel) {
-                      setState(() {
-                        userModel = updatedUser;
-                      });
-                    }
-                  },
-                ),
+                      if (updatedUser is UserModel) {
+                        setState(() {
+                          userModel = updatedUser;
+                        });
+                      }
+                    }),
                 ImageAvatar(
                   image: userModel.imageUrl,
                   gender: userModel.gender ?? "",
@@ -66,23 +65,73 @@ class _UserProfileState extends State<UserProfile> {
                 Text(
                   userModel.name,
                   style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Poppins"),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Poppins",
+                  ),
                 ),
                 const SizedBox(height: 60),
-                InfoBody(
-                  userModel: userModel,
-                ),
+                InfoBody(userModel: userModel),
                 const SizedBox(height: 60),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                //   child: CustomButton(
-                //     label: "Change Password",
-                //     onPressed: () {},
-                //     color: 0xff4FA085,
-                //   ),
-                // ),
+                CustomButton(
+                  label: "Change password",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChangePassword(
+                          userModel: userModel,
+                        ),
+                      ),
+                    );
+                  },
+                  color: 0xff247CFF,
+                ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: CustomButton(
+                //         label: "Edit Profile",
+                //         onPressed: () async {
+                //           final updatedUser = await Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: (context) => UserEditInfo(
+                //                 userModel: userModel,
+                //               ),
+                //             ),
+                //           );
+
+                //           if (updatedUser is UserModel) {
+                //             setState(() {
+                //               userModel = updatedUser;
+                //             });
+                //           }
+                //         },
+                //         color: 0xff247CFF,
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: 10,
+                //     ),
+                //     Expanded(
+                //       child: CustomButton(
+                //         label: "Change password",
+                //         onPressed: () {
+                //           Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: (context) => ChangePassword(
+                //                 userModel: userModel,
+                //               ),
+                //             ),
+                //           );
+                //         },
+                //         color: 0xff247CFF,
+                //       ),
+                //     )
+                //   ],
+                // )
               ],
             ),
           ),
