@@ -112,8 +112,12 @@ class _UserEditInfoState extends State<UserEditInfo> {
                             name: nameController.text.isNotEmpty
                                 ? nameController.text
                                 : widget.userModel.name,
-                            id: widget.userModel.id,
-                            email: widget.userModel.email,
+                            id: idController.text.isNotEmpty
+                                ? idController.text
+                                : widget.userModel.id,
+                            email: emailController.text.isNotEmpty
+                                ? emailController.text
+                                : widget.userModel.email,
                             password: passwordController.text.isNotEmpty
                                 ? passwordController.text
                                 : widget.userModel.password,
@@ -129,6 +133,11 @@ class _UserEditInfoState extends State<UserEditInfo> {
                             box = await hiveService.openBox(boxName: "user");
                           } else {
                             box = Hive.box<UserModel>("user");
+                          }
+
+                          if (updatedUser.email != widget.userModel.email) {
+                            await hiveService.deleteData(
+                                box: box, key: widget.userModel.email);
                           }
 
                           await hiveService.putData(
@@ -173,8 +182,16 @@ class _UserEditInfoState extends State<UserEditInfo> {
                       label: "Student ID",
                       icon: Icons.confirmation_number,
                       controller: idController,
-                      readOnly: true,
+                      readOnly: false,
                       validator: (value) {
+                        if (value!.isEmpty &&
+                            emailController.text.isNotEmpty &&
+                            emailController.text != widget.userModel.email) {
+                          return "This field is required";
+                        }
+                        if (value.length != 8 && value.isNotEmpty) {
+                          return "Student ID must be 8 digits";
+                        }
                         return null;
                       },
                     ),
@@ -193,8 +210,27 @@ class _UserEditInfoState extends State<UserEditInfo> {
                       label: "Email",
                       icon: Icons.email,
                       controller: emailController,
-                      readOnly: true,
+                      readOnly: false,
                       validator: (value) {
+                        if (value!.isEmpty &&
+                            idController.text.isNotEmpty &&
+                            idController.text != widget.userModel.id) {
+                          return "This field is required";
+                        }
+                        if (value.isNotEmpty && idController.text.isNotEmpty) {
+                          final emailRegex =
+                              RegExp(r'^(\d+)@stud\.fci-cu\.edu\.eg$');
+                          final match = emailRegex.firstMatch(value);
+
+                          if (match == null) {
+                            return "Enter a valid FCAI email. \nex:studentID@stud.fci-cu.edu.eg";
+                          }
+
+                          if (match.group(1) != idController.text) {
+                            return "Email must match student ID";
+                          }
+                        }
+
                         return null;
                       },
                     ),
