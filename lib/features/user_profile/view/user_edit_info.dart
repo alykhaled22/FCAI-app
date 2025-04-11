@@ -164,7 +164,6 @@ class _UserEditInfoState extends State<UserEditInfo> {
                       label: "Name",
                       icon: Icons.person,
                       controller: nameController,
-                      readOnly: false,
                       validator: (value) {
                         return null;
                       },
@@ -182,7 +181,6 @@ class _UserEditInfoState extends State<UserEditInfo> {
                       label: "Student ID",
                       icon: Icons.confirmation_number,
                       controller: idController,
-                      readOnly: false,
                       validator: (value) {
                         if (value!.isEmpty &&
                             emailController.text.isNotEmpty &&
@@ -210,7 +208,6 @@ class _UserEditInfoState extends State<UserEditInfo> {
                       label: "Email",
                       icon: Icons.email,
                       controller: emailController,
-                      readOnly: false,
                       validator: (value) {
                         if (value!.isEmpty &&
                             idController.text.isNotEmpty &&

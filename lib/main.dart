@@ -12,6 +12,5 @@ void main() async{
   ));
 
   await HiveService().init(); 
-  
   runApp(const FCAIApp());
 }

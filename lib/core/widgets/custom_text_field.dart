@@ -6,7 +6,7 @@ class CustomTextField extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.controller,
-    this.validator, required this.readOnly,
+    this.validator,  this.readOnly = false,
   });
   final String label;
   final IconData icon;

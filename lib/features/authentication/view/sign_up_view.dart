@@ -55,7 +55,6 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 SizedBox(height: 30),
                 CustomTextField(
-                  readOnly: false,
                   label: "Full Name",
                   icon: Icons.person,
                   controller: nameController,
@@ -76,7 +75,6 @@ class _SignUpViewState extends State<SignUpView> {
                     }),
                 SizedBox(height: 17),
                 CustomTextField(
-                    readOnly: false,
                     label: "Student ID",
                     icon: Icons.confirmation_number,
                     controller: idController,
@@ -102,7 +100,6 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 SizedBox(height: 17),
                 CustomTextField(
-                  readOnly: false,
                   label: "FCAI Email",
                   icon: Icons.email,
                   controller: emailController,

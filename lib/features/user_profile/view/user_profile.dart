@@ -87,51 +87,6 @@ class _UserProfileState extends State<UserProfile> {
                   },
                   color: 0xff247CFF,
                 ),
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: CustomButton(
-                //         label: "Edit Profile",
-                //         onPressed: () async {
-                //           final updatedUser = await Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //               builder: (context) => UserEditInfo(
-                //                 userModel: userModel,
-                //               ),
-                //             ),
-                //           );
-
-                //           if (updatedUser is UserModel) {
-                //             setState(() {
-                //               userModel = updatedUser;
-                //             });
-                //           }
-                //         },
-                //         color: 0xff247CFF,
-                //       ),
-                //     ),
-                //     SizedBox(
-                //       width: 10,
-                //     ),
-                //     Expanded(
-                //       child: CustomButton(
-                //         label: "Change password",
-                //         onPressed: () {
-                //           Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //               builder: (context) => ChangePassword(
-                //                 userModel: userModel,
-                //               ),
-                //             ),
-                //           );
-                //         },
-                //         color: 0xff247CFF,
-                //       ),
-                //     )
-                //   ],
-                // )
               ],
             ),
           ),

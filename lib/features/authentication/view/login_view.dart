@@ -51,7 +51,6 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   SizedBox(height: 20),
                   CustomTextField(
-                    readOnly: false,
                     controller: emailController,
                     validator: (value) {
                       if (value!.isEmpty) {
