@@ -1,5 +1,7 @@
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
+import 'package:fcai_app/core/utils/validators.dart';
+import 'package:fcai_app/core/widgets/auth_label.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/features/authentication/view/sign_up_view.dart';
@@ -20,7 +22,7 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final HiveService hiveService = HiveService();
+  final HiveService hiveService = HiveService<UserModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,37 +41,18 @@ class _LoginViewState extends State<LoginView> {
                     'assets/Group 1.png',
                   ),
                   SizedBox(height: 60),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                  AuthLabel(label: "Login", fontSize: 28),
                   SizedBox(height: 20),
                   CustomTextField(
                     controller: emailController,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    },
+                    validator: Validators.validateRequiredField,
                     label: "Email",
                     icon: Icons.email,
                   ),
                   SizedBox(height: 20),
                   PasswordTextField(
                     controller: passwordController,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
+                    validator: Validators.validateRequiredField,
                     label: "Password",
                   ),
                   SizedBox(height: 40),
@@ -80,7 +63,8 @@ class _LoginViewState extends State<LoginView> {
                           Box<UserModel> box;
 
                           if (!hiveService.isBoxOpen(boxName: "user")) {
-                            box = await hiveService.openBox(boxName: "user");
+                            box = await hiveService.openBox<UserModel>(
+                                boxName: "user");
                           } else {
                             box = Hive.box<UserModel>("user");
                           }

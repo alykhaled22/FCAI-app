@@ -1,5 +1,7 @@
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
+import 'package:fcai_app/core/utils/validators.dart';
+import 'package:fcai_app/core/widgets/auth_label.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/core/widgets/gender_radio.dart';
@@ -28,7 +30,7 @@ class _SignUpViewState extends State<SignUpView> {
   String? selectedGender;
   String? selectedLevel;
 
-  final HiveService hiveService = HiveService();
+  final HiveService hiveService = HiveService<UserModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,27 +45,13 @@ class _SignUpViewState extends State<SignUpView> {
             key: formKey,
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
+                AuthLabel(label: "Sign Up", fontSize: 28),
                 SizedBox(height: 30),
                 CustomTextField(
                   label: "Full Name",
                   icon: Icons.person,
                   controller: nameController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "This field is required";
-                    }
-                    return null;
-                  },
+                  validator: Validators.validateRequiredField,
                 ),
                 SizedBox(height: 17),
                 GenderRadio(
@@ -75,18 +63,11 @@ class _SignUpViewState extends State<SignUpView> {
                     }),
                 SizedBox(height: 17),
                 CustomTextField(
-                    label: "Student ID",
-                    icon: Icons.confirmation_number,
-                    controller: idController,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "This field is required";
-                      }
-                      if (value.length != 8) {
-                        return "Student ID must be 8 digits";
-                      }
-                      return null;
-                    }),
+                  label: "Student ID",
+                  icon: Icons.confirmation_number,
+                  controller: idController,
+                  validator: Validators.validateStudentId,
+                ),
                 SizedBox(height: 17),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -103,49 +84,24 @@ class _SignUpViewState extends State<SignUpView> {
                   label: "FCAI Email",
                   icon: Icons.email,
                   controller: emailController,
-                  validator: (value) {
-                    if (value!.isEmpty) return "This field is required";
-
-                    final emailRegex = RegExp(r'^(\d+)@stud\.fci-cu\.edu\.eg$');
-                    final match = emailRegex.firstMatch(value);
-
-                    if (match == null) {
-                      return "Enter a valid FCAI email. \nex:studentID@stud.fci-cu.edu.eg";
-                    }
-
-                    if (match.group(1) != idController.text) {
-                      return "Email must match student ID";
-                    }
-
-                    return null;
-                  },
+                  validator: (value) =>
+                      Validators.validateFcaiEmail(value, idController.text),
                 ),
                 SizedBox(height: 17),
                 PasswordTextField(
                   label: "Password",
                   controller: passwordController,
-                  validator: (value) {
-                    if (value!.isEmpty) return "This field is required";
-                    if (value.length < 8) {
-                      return "Password must be at least 8 characters";
-                    }
-                    if (!RegExp(r'^(?=.*\d).{8,}$').hasMatch(value)) {
-                      return "Password must contain at least one number";
-                    }
-                    return null;
-                  },
+                  validator: Validators.validatePassword,
                 ),
                 SizedBox(height: 17),
                 PasswordTextField(
-                    label: "Confirm password",
-                    controller: confirmPasswordController,
-                    validator: (value) {
-                      if (value!.isEmpty) return "This field is required";
-                      if (value != passwordController.text) {
-                        return "Passwords do not match";
-                      }
-                      return null;
-                    }),
+                  label: "Confirm password",
+                  controller: confirmPasswordController,
+                  validator: (value) => Validators.validateConfirmPassword(
+                    value,
+                    passwordController.text,
+                  ),
+                ),
                 SizedBox(height: 40),
                 CustomButton(
                     label: "Sign up",
@@ -155,7 +111,8 @@ class _SignUpViewState extends State<SignUpView> {
                       Box<UserModel> box;
 
                       if (!hiveService.isBoxOpen(boxName: "user")) {
-                        box = await hiveService.openBox(boxName: "user");
+                        box = await hiveService.openBox<UserModel>(
+                            boxName: "user");
                       } else {
                         box = Hive.box<UserModel>("user");
                       }

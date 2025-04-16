@@ -11,7 +11,7 @@ class UserModel {
   @HiveField(2)
   final String email;
   @HiveField(3)
-  final String? password;
+  final String password;
   @HiveField(4)
   final String? gender;
   @HiveField(5)

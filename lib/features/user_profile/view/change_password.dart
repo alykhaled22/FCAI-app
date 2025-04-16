@@ -1,5 +1,7 @@
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
+import 'package:fcai_app/core/utils/validators.dart';
+import 'package:fcai_app/core/widgets/auth_label.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
@@ -38,61 +40,28 @@ class _ChangePasswordState extends State<ChangePassword> {
                     'assets/ChangePassword.png',
                   ),
                   SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'Change password',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  AuthLabel(label: "Change Password",fontSize: 24,),
                   SizedBox(height: 20),
                   PasswordTextField(
                     label: "Old password",
                     controller: oldPasswordController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "This field is required";
-                      }
-                      if (value != widget.userModel.password) {
-                        return "Wrong password";
-                      }
-                      return null;
-                    },
+                    validator: (value) => Validators.validateOldPassword(
+                      value,
+                      oldPassword: widget.userModel.password,
+                    ),
                   ),
                   SizedBox(height: 20),
                   PasswordTextField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "This field is required";
-                      }
-                      if (value.length < 8) {
-                        return "Password must be at least 8 characters";
-                      }
-                      if (!RegExp(r'^(?=.*\d).{8,}$').hasMatch(value)) {
-                        return "Password must contain at least one number";
-                      }
-
-                      return null;
-                    },
+                    validator: Validators.validatePassword,
                     label: "New password",
                     controller: passwordController,
                   ),
                   SizedBox(height: 20),
                   PasswordTextField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "This field is required";
-                      }
-                      if (value != passwordController.text) {
-                        return "Passwords do not match";
-                      }
-
-                      return null;
-                    },
+                    validator: (value) => Validators.validateConfirmPassword(
+                      value,
+                      passwordController.text,
+                    ),
                     label: "Confirm new password",
                     controller: confirmPasswordController,
                   ),
@@ -127,7 +96,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             value: updatedUser);
 
                         if (!context.mounted) return;
-                        
+
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content:

@@ -1,14 +1,14 @@
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:hive_flutter/adapters.dart';
 
-class HiveService {
+class HiveService<T> {
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserModelAdapter());
   }
 
-  Future<Box<UserModel>> openBox({required String boxName}) async {
-    return await Hive.openBox<UserModel>(boxName);
+  Future<Box<T>> openBox<T>({required String boxName}) async {
+    return await Hive.openBox<T>(boxName);
   }
 
   bool isBoxOpen({required String boxName}) {
@@ -16,27 +16,15 @@ class HiveService {
   }
 
   Future<void> putData(
-      {required Box box, required String key, required dynamic value}) async {
+      {required Box<T> box, required String key, required T value}) async {
     await box.put(key, value);
   }
 
-  UserModel? getData({required Box box, required String key}) {
+  T? getData({required Box<T> box, required String key}) {
     return box.get(key);
   }
 
-  Future<void> deleteData({required Box box, required String key}) async {
+  Future<void> deleteData({required Box<T> box, required String key}) async {
     await box.delete(key);
-  }
-
-  Future<void> clearBox({required Box box}) async {
-    await box.clear();
-  }
-
-  Future<void> closeBox({required Box box}) async {
-    await box.close();
-  }
-
-  Future<void> closeAllBoxes() async {
-    await Hive.close();
   }
 }

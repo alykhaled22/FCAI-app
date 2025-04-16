@@ -20,7 +20,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       id: fields[0] as String,
       name: fields[1] as String,
       email: fields[2] as String,
-      password: fields[3] as String?,
+      password: fields[3] as String,
       gender: fields[4] as String?,
       level: fields[5] as String?,
       imageUrl: fields[6] as String?,

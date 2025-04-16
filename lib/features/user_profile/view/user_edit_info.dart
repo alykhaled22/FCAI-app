@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
+import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/core/widgets/gender_radio.dart';
 import 'package:fcai_app/core/widgets/level_dropdown.dart';
@@ -24,12 +26,10 @@ class _UserEditInfoState extends State<UserEditInfo> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController idController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+
   String? selectedGender;
   int? selectedLevel;
-  HiveService hiveService = HiveService();
+  HiveService hiveService = HiveService<UserModel>();
 
   File? image;
   final picker = ImagePicker();
@@ -118,9 +118,7 @@ class _UserEditInfoState extends State<UserEditInfo> {
                             email: emailController.text.isNotEmpty
                                 ? emailController.text
                                 : widget.userModel.email,
-                            password: passwordController.text.isNotEmpty
-                                ? passwordController.text
-                                : widget.userModel.password,
+                            password: widget.userModel.password,
                             gender: selectedGender ?? widget.userModel.gender,
                             level: selectedLevel?.toString() ??
                                 widget.userModel.level,
@@ -130,7 +128,8 @@ class _UserEditInfoState extends State<UserEditInfo> {
                           Box<UserModel> box;
 
                           if (!hiveService.isBoxOpen(boxName: "user")) {
-                            box = await hiveService.openBox(boxName: "user");
+                            box = await hiveService.openBox<UserModel>(
+                                boxName: "user");
                           } else {
                             box = Hive.box<UserModel>("user");
                           }
@@ -181,17 +180,12 @@ class _UserEditInfoState extends State<UserEditInfo> {
                       label: "Student ID",
                       icon: Icons.confirmation_number,
                       controller: idController,
-                      validator: (value) {
-                        if (value!.isEmpty &&
-                            emailController.text.isNotEmpty &&
-                            emailController.text != widget.userModel.email) {
-                          return "This field is required";
-                        }
-                        if (value.length != 8 && value.isNotEmpty) {
-                          return "Student ID must be 8 digits";
-                        }
-                        return null;
-                      },
+                      validator: (value) =>
+                          Validators.validateStudentIdWithContext(
+                        value,
+                        currentEmail: emailController.text,
+                        originalEmail: widget.userModel.email,
+                      ),
                     ),
                     SizedBox(height: 20),
                     Align(
@@ -208,28 +202,12 @@ class _UserEditInfoState extends State<UserEditInfo> {
                       label: "Email",
                       icon: Icons.email,
                       controller: emailController,
-                      validator: (value) {
-                        if (value!.isEmpty &&
-                            idController.text.isNotEmpty &&
-                            idController.text != widget.userModel.id) {
-                          return "This field is required";
-                        }
-                        if (value.isNotEmpty && idController.text.isNotEmpty) {
-                          final emailRegex =
-                              RegExp(r'^(\d+)@stud\.fci-cu\.edu\.eg$');
-                          final match = emailRegex.firstMatch(value);
-
-                          if (match == null) {
-                            return "Enter a valid FCAI email. \nex:studentID@stud.fci-cu.edu.eg";
-                          }
-
-                          if (match.group(1) != idController.text) {
-                            return "Email must match student ID";
-                          }
-                        }
-
-                        return null;
-                      },
+                      validator: (value) =>
+                          Validators.validateFcaiEmailWithContext(
+                        value,
+                        currentID: idController.text,
+                        originalID: widget.userModel.id,
+                      ),
                     ),
                   ],
                 ),
