@@ -1,5 +1,6 @@
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
+import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
@@ -40,7 +41,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                     'assets/ChangePassword.png',
                   ),
                   SizedBox(height: 20),
-                  AuthLabel(label: "Change Password",fontSize: 24,),
+                  AuthLabel(
+                    label: "Change Password",
+                    fontSize: 24,
+                  ),
                   SizedBox(height: 20),
                   PasswordTextField(
                     label: "Old password",
@@ -97,10 +101,8 @@ class _ChangePasswordState extends State<ChangePassword> {
 
                         if (!context.mounted) return;
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content:
-                                    Text("Password changed scuccessfully!")));
+                        Helpers.showSuccessSnackBar(
+                            context, "Password changed scuccessfully!");
                         Navigator.pop(context);
                       }
                     },

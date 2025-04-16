@@ -21,7 +21,7 @@ class _StoreItemState extends State<StoreItem> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(getCategoryImage(widget.nearbyPlacesModel.category),
+              Image.asset(Helpers.getCategoryImage(widget.nearbyPlacesModel.category),
                   width: 50, height: 50, fit: BoxFit.cover),
               SizedBox(width: 30),
               Expanded(

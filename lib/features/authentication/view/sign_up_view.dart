@@ -1,5 +1,6 @@
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
+import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
@@ -140,8 +141,8 @@ class _SignUpViewState extends State<SignUpView> {
 
                       if (!context.mounted) return;
 
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Signed up scuccessfully!")));
+                      Helpers.showSuccessSnackBar(
+                          context, "Signed up scuccessfully!");
                       Navigator.pop(context);
                     },
                     color: 0xff247CFF),

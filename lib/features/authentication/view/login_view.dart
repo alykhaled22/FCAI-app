@@ -1,5 +1,6 @@
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
+import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
@@ -69,31 +70,30 @@ class _LoginViewState extends State<LoginView> {
                             box = Hive.box<UserModel>("user");
                           }
 
-                          UserModel? user = hiveService.getData(
-                              box: box, key: emailController.text);
+                          final email = emailController.text.trim();
+                          final password = passwordController.text;
 
-                          if (user == null ||
-                              passwordController.text != user.password) {
+                          UserModel? user =
+                              hiveService.getData(box: box, key: email);
+
+                          if (user == null || password != user.password) {
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Invalid email or password")),
-                              );
+                              Helpers.showErrorSnackBar(
+                                  context, "Invalid Email or Password");
                             }
                             return;
                           }
                           if (!context.mounted) return;
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("Login successful!")),
-                          );
+                          Helpers.showSuccessSnackBar(
+                              context, "Login successful!");
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserProfile(
-                                        userModel: user,
-                                      )));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    UserProfile(userModel: user)),
+                          );
                         }
                       },
                       color: 0xff247CFF),

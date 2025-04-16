@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
+import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/core/widgets/gender_radio.dart';
@@ -146,9 +146,8 @@ class _UserEditInfoState extends State<UserEditInfo> {
 
                           if (!context.mounted) return;
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Edited scuccessfully!")));
+                          Helpers.showSuccessSnackBar(
+                              context, "Edited scuccessfully!");
                           Navigator.pop(context, updatedUser);
                         }
                       },
