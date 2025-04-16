@@ -30,6 +30,7 @@ environment:
 dependencies:
   build_runner: ^2.4.15
   cupertino_icons: ^1.0.8
+  dio: ^5.8.0+1
   flutter:
     sdk: flutter
   hive_flutter: ^1.1.0
@@ -74,5 +75,9 @@ flutter:
       fonts:
         - asset: assets/fonts/Montserrat-Bold.ttf
           weight: 700
+          
+    - family: GT Sectra Fine
+      fonts:
+        - asset: assets/fonts/GT Sectra Fine Regular.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

@@ -1,4 +1,5 @@
 import 'package:fcai_app/features/authentication/view/login_view.dart';
+import 'package:fcai_app/features/stores/view/stores_view.dart';
 import 'package:flutter/material.dart';
 
 class FCAIApp extends StatelessWidget {

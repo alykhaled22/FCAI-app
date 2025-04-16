@@ -30,65 +30,63 @@ class _UserProfileState extends State<UserProfile> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xffF5F5F5),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 25),
-            child: Column(
-              children: [
-                CustomAppBar(
-                    iconL: Icons.logout_outlined,
-                    iconR: Icons.edit_note_rounded,
-                    onPressedL: () {
-                      Navigator.pop(context);
-                    },
-                    onPressedR: () async {
-                      final updatedUser = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserEditInfo(
-                            userModel: userModel,
-                          ),
-                        ),
-                      );
-
-                      if (updatedUser is UserModel) {
-                        setState(() {
-                          userModel = updatedUser;
-                        });
-                      }
-                    }),
-                ImageAvatar(
-                  image: userModel.imageUrl,
-                  gender: userModel.gender ?? "",
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  userModel.name,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Poppins",
-                  ),
-                ),
-                const SizedBox(height: 60),
-                InfoBody(userModel: userModel),
-                const SizedBox(height: 60),
-                CustomButton(
-                  label: "Change password",
-                  onPressed: () {
-                    Navigator.push(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 25),
+          child: Column(
+            children: [
+              CustomAppBar(
+                  iconL: Icons.logout_outlined,
+                  iconR: Icons.edit_note_rounded,
+                  onPressedL: () {
+                    Navigator.pop(context);
+                  },
+                  onPressedR: () async {
+                    final updatedUser = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChangePassword(
+                        builder: (context) => UserEditInfo(
                           userModel: userModel,
                         ),
                       ),
                     );
-                  },
-                  color: 0xff247CFF,
+        
+                    if (updatedUser is UserModel) {
+                      setState(() {
+                        userModel = updatedUser;
+                      });
+                    }
+                  }),
+              ImageAvatar(
+                image: userModel.imageUrl,
+                gender: userModel.gender ?? "",
+              ),
+              const SizedBox(height: 20),
+              Text(
+                userModel.name,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Poppins",
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 60),
+              InfoBody(userModel: userModel),
+              const SizedBox(height: 60),
+              CustomButton(
+                label: "Change password",
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChangePassword(
+                        userModel: userModel,
+                      ),
+                    ),
+                  );
+                },
+                color: 0xff247CFF,
+              ),
+            ],
           ),
         ),
       ),
