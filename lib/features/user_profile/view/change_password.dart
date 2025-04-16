@@ -37,14 +37,9 @@ class _ChangePasswordState extends State<ChangePassword> {
               key: formKey,
               child: Column(
                 children: [
-                  Image.asset(
-                    'assets/ChangePassword.png',
-                  ),
+                  Image.asset('assets/ChangePassword.png'),
                   SizedBox(height: 20),
-                  AuthLabel(
-                    label: "Change Password",
-                    fontSize: 24,
-                  ),
+                  AuthLabel(label: "Change Password", fontSize: 24),
                   SizedBox(height: 20),
                   PasswordTextField(
                     label: "Old password",
@@ -74,38 +69,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                   CustomButton(
                     label: "Save password",
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        UserModel updatedUser = UserModel(
-                          name: widget.userModel.name,
-                          id: widget.userModel.id,
-                          email: widget.userModel.email,
-                          password: passwordController.text,
-                          gender: widget.userModel.gender,
-                          level: widget.userModel.level,
-                          imageUrl: widget.userModel.imageUrl,
-                        );
-
-                        Box<UserModel> box;
-
-                        if (!hiveService.isBoxOpen(boxName: "user")) {
-                          box = await hiveService.openBox(boxName: "user");
-                        } else {
-                          box = Hive.box<UserModel>("user");
-                        }
-
-                        await hiveService.putData(
-                            box: box,
-                            key: updatedUser.email,
-                            value: updatedUser);
-
-                        if (!context.mounted) return;
-
-                        Helpers.showSuccessSnackBar(
-                            context, "Password changed scuccessfully!");
-                        Navigator.pop(context);
-                      }
-                    },
+                    onPressed: () async => await _handleChangePass(),
                     color: 0xff247CFF,
                   )
                 ],
@@ -115,5 +79,35 @@ class _ChangePasswordState extends State<ChangePassword> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleChangePass() async {
+    if (formKey.currentState!.validate()) {
+      UserModel updatedUser = UserModel(
+        name: widget.userModel.name,
+        id: widget.userModel.id,
+        email: widget.userModel.email,
+        password: passwordController.text,
+        gender: widget.userModel.gender,
+        level: widget.userModel.level,
+        imageUrl: widget.userModel.imageUrl,
+      );
+
+      Box<UserModel> box;
+
+      if (!hiveService.isBoxOpen(boxName: "user")) {
+        box = await hiveService.openBox(boxName: "user");
+      } else {
+        box = Hive.box<UserModel>("user");
+      }
+
+      await hiveService.putData(
+          box: box, key: updatedUser.email, value: updatedUser);
+
+      if (!mounted) return;
+
+      Helpers.showSuccessSnackBar(context, "Password changed scuccessfully!");
+      Navigator.pop(context);
+    }
   }
 }

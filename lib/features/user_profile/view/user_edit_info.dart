@@ -34,48 +34,13 @@ class _UserEditInfoState extends State<UserEditInfo> {
   File? image;
   final picker = ImagePicker();
 
-  Future<void> pickImage(ImageSource source) async {
-    final XFile? pickedFile = await picker.pickImage(source: source);
-    if (pickedFile != null) {
-      setState(() {
-        image = File(pickedFile.path);
-      });
-    }
-  }
-
-  void showImagePicker() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return SafeArea(
-          child: Wrap(
-            children: [
-              ListTile(
-                leading: Icon(Icons.camera),
-                title: Text('Take a Photo'),
-                onTap: () {
-                  Navigator.pop(context);
-                  pickImage(ImageSource.camera);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
-                onTap: () {
-                  Navigator.pop(context);
-                  pickImage(ImageSource.gallery);
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
+    _initialize();
+  }
+
+  void _initialize() {
     nameController.text = widget.userModel.name;
     idController.text = widget.userModel.id;
     emailController.text = widget.userModel.email;
@@ -106,51 +71,7 @@ class _UserEditInfoState extends State<UserEditInfo> {
                       onPressedL: () {
                         Navigator.pop(context);
                       },
-                      onPressedR: () async {
-                        if (formKey.currentState!.validate()) {
-                          UserModel updatedUser = UserModel(
-                            name: nameController.text.isNotEmpty
-                                ? nameController.text
-                                : widget.userModel.name,
-                            id: idController.text.isNotEmpty
-                                ? idController.text
-                                : widget.userModel.id,
-                            email: emailController.text.isNotEmpty
-                                ? emailController.text
-                                : widget.userModel.email,
-                            password: widget.userModel.password,
-                            gender: selectedGender ?? widget.userModel.gender,
-                            level: selectedLevel?.toString() ??
-                                widget.userModel.level,
-                            imageUrl: image != null ? image!.path : "",
-                          );
-
-                          Box<UserModel> box;
-
-                          if (!hiveService.isBoxOpen(boxName: "user")) {
-                            box = await hiveService.openBox<UserModel>(
-                                boxName: "user");
-                          } else {
-                            box = Hive.box<UserModel>("user");
-                          }
-
-                          if (updatedUser.email != widget.userModel.email) {
-                            await hiveService.deleteData(
-                                box: box, key: widget.userModel.email);
-                          }
-
-                          await hiveService.putData(
-                              box: box,
-                              key: updatedUser.email,
-                              value: updatedUser);
-
-                          if (!context.mounted) return;
-
-                          Helpers.showSuccessSnackBar(
-                              context, "Edited scuccessfully!");
-                          Navigator.pop(context, updatedUser);
-                        }
-                      },
+                      onPressedR: () async => await _handleEditProfile(),
                     ),
                     AddImageAvatar(
                       image: image != null ? image!.path : "",
@@ -213,6 +134,85 @@ class _UserEditInfoState extends State<UserEditInfo> {
               )),
         ),
       ),
+    );
+  }
+
+  Future<void> _handleEditProfile() async {
+    if (formKey.currentState!.validate()) {
+      UserModel updatedUser = UserModel(
+        name: nameController.text.isNotEmpty
+            ? nameController.text
+            : widget.userModel.name,
+        id: idController.text.isNotEmpty
+            ? idController.text
+            : widget.userModel.id,
+        email: emailController.text.isNotEmpty
+            ? emailController.text
+            : widget.userModel.email,
+        password: widget.userModel.password,
+        gender: selectedGender ?? widget.userModel.gender,
+        level: selectedLevel?.toString() ?? widget.userModel.level,
+        imageUrl: image != null ? image!.path : "",
+      );
+
+      Box<UserModel> box;
+
+      if (!hiveService.isBoxOpen(boxName: "user")) {
+        box = await hiveService.openBox<UserModel>(boxName: "user");
+      } else {
+        box = Hive.box<UserModel>("user");
+      }
+
+      if (updatedUser.email != widget.userModel.email) {
+        await hiveService.deleteData(box: box, key: widget.userModel.email);
+      }
+
+      await hiveService.putData(
+          box: box, key: updatedUser.email, value: updatedUser);
+
+      if (!mounted) return;
+
+      Helpers.showSuccessSnackBar(context, "Edited scuccessfully!");
+      Navigator.pop(context, updatedUser);
+    }
+  }
+
+  Future<void> pickImage(ImageSource source) async {
+    final XFile? pickedFile = await picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        image = File(pickedFile.path);
+      });
+    }
+  }
+
+  void showImagePicker() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.camera),
+                title: Text('Take a Photo'),
+                onTap: () {
+                  Navigator.pop(context);
+                  pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.pop(context);
+                  pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

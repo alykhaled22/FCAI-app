@@ -38,9 +38,7 @@ class _LoginViewState extends State<LoginView> {
               key: formKey,
               child: Column(
                 children: [
-                  Image.asset(
-                    'assets/Group 1.png',
-                  ),
+                  Image.asset('assets/Group 1.png'),
                   SizedBox(height: 60),
                   AuthLabel(label: "Login", fontSize: 28),
                   SizedBox(height: 20),
@@ -59,43 +57,7 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(height: 40),
                   CustomButton(
                       label: "Login",
-                      onPressed: () async {
-                        if (formKey.currentState!.validate()) {
-                          Box<UserModel> box;
-
-                          if (!hiveService.isBoxOpen(boxName: "user")) {
-                            box = await hiveService.openBox<UserModel>(
-                                boxName: "user");
-                          } else {
-                            box = Hive.box<UserModel>("user");
-                          }
-
-                          final email = emailController.text.trim();
-                          final password = passwordController.text;
-
-                          UserModel? user =
-                              hiveService.getData(box: box, key: email);
-
-                          if (user == null || password != user.password) {
-                            if (context.mounted) {
-                              Helpers.showErrorSnackBar(
-                                  context, "Invalid Email or Password");
-                            }
-                            return;
-                          }
-                          if (!context.mounted) return;
-
-                          Helpers.showSuccessSnackBar(
-                              context, "Login successful!");
-
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    UserProfile(userModel: user)),
-                          );
-                        }
-                      },
+                      onPressed: () async => await _handleLogin(),
                       color: 0xff247CFF),
                   SizedBox(height: 10),
                   SwapAuth(
@@ -113,6 +75,33 @@ class _LoginViewState extends State<LoginView> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _handleLogin() async {
+    if (!formKey.currentState!.validate()) return;
+
+    final boxName = "user";
+    final box = !hiveService.isBoxOpen(boxName: boxName)
+        ? await hiveService.openBox<UserModel>(boxName: boxName)
+        : Hive.box<UserModel>(boxName);
+
+    final email = emailController.text.trim();
+    final password = passwordController.text;
+    final user = hiveService.getData(box: box, key: email);
+
+    if (user == null || user.password != password) {
+      if (!mounted) return;
+      Helpers.showErrorSnackBar(context, "Invalid email or password");
+      return;
+    }
+
+    if (!mounted) return;
+    Helpers.showSuccessSnackBar(context, "Login successful!");
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => UserProfile(userModel: user)),
     );
   }
 }

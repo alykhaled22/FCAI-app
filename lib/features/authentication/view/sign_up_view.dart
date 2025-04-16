@@ -106,45 +106,7 @@ class _SignUpViewState extends State<SignUpView> {
                 SizedBox(height: 40),
                 CustomButton(
                     label: "Sign up",
-                    onPressed: () async {
-                      if (!formKey.currentState!.validate()) return;
-
-                      Box<UserModel> box;
-
-                      if (!hiveService.isBoxOpen(boxName: "user")) {
-                        box = await hiveService.openBox<UserModel>(
-                            boxName: "user");
-                      } else {
-                        box = Hive.box<UserModel>("user");
-                      }
-
-                      if (!context.mounted) return;
-
-                      if (box.containsKey(emailController.text)) {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text(
-                                "User with the same Email already exists!")));
-                        return;
-                      }
-
-                      UserModel user = UserModel(
-                        id: idController.text,
-                        name: nameController.text,
-                        email: emailController.text,
-                        password: passwordController.text,
-                        gender: selectedGender,
-                        level: selectedLevel,
-                      );
-
-                      await hiveService.putData(
-                          box: box, key: emailController.text, value: user);
-
-                      if (!context.mounted) return;
-
-                      Helpers.showSuccessSnackBar(
-                          context, "Signed up scuccessfully!");
-                      Navigator.pop(context);
-                    },
+                    onPressed: () async => await _handleSignUp(),
                     color: 0xff247CFF),
                 SizedBox(
                   height: 10,
@@ -162,5 +124,41 @@ class _SignUpViewState extends State<SignUpView> {
         ),
       ),
     ));
+  }
+
+  Future<void> _handleSignUp() async {
+    if (!formKey.currentState!.validate()) return;
+
+    Box<UserModel> box;
+
+    if (!hiveService.isBoxOpen(boxName: "user")) {
+      box = await hiveService.openBox<UserModel>(boxName: "user");
+    } else {
+      box = Hive.box<UserModel>("user");
+    }
+
+    if (!mounted) return;
+
+    if (box.containsKey(emailController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("User with the same Email already exists!")));
+      return;
+    }
+
+    UserModel user = UserModel(
+      id: idController.text,
+      name: nameController.text,
+      email: emailController.text,
+      password: passwordController.text,
+      gender: selectedGender,
+      level: selectedLevel,
+    );
+
+    await hiveService.putData(box: box, key: emailController.text, value: user);
+
+    if (!mounted) return;
+
+    Helpers.showSuccessSnackBar(context, "Signed up scuccessfully!");
+    Navigator.pop(context);
   }
 }
