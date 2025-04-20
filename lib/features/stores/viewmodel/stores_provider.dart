@@ -6,7 +6,7 @@ import 'package:hive_flutter/adapters.dart';
 
 class StoresProvider with ChangeNotifier {
   List<StoreModel> stores = [];
-  bool isLoading = false;
+  bool isLoading = true;
 
   static const String boxName = "stores";
 
@@ -19,6 +19,7 @@ class StoresProvider with ChangeNotifier {
 
     if (box.isNotEmpty) {
       stores = box.values.toList();
+      isLoading = false;
       notifyListeners();
     } else {
       await fetchAndCacheStores();
@@ -31,7 +32,7 @@ class StoresProvider with ChangeNotifier {
 
     try {
       final response =
-          await NearbyStoresApi(dio: Dio()).fetchNearbyStores(0.0, 0.0);      
+          await NearbyStoresApi(dio: Dio()).fetchNearbyStores(0.0, 0.0);
 
       final box = Hive.box<StoreModel>(boxName);
       await box.clear();
@@ -40,7 +41,6 @@ class StoresProvider with ChangeNotifier {
         await box.add(store);
       }
       stores = box.values.toList();
-
     } catch (e) {
       print("Error fetching stores: $e");
     }
@@ -48,4 +48,17 @@ class StoresProvider with ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+
+  List<StoreModel> get favStores {
+    return stores.where((store) => store.isFav).toList();
+  }
+
+  void toggleFav(StoreModel store) {
+    final box = Hive.box<StoreModel>(boxName);
+    store.isFav = !store.isFav;
+    box.putAt(stores.indexOf(store), store);
+    notifyListeners();
+  }
+
+  
 }

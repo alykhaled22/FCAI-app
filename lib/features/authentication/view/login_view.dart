@@ -5,10 +5,10 @@ import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
+import 'package:fcai_app/fcai_app_navigation.dart';
 import 'package:fcai_app/features/authentication/view/sign_up_view.dart';
 import 'package:fcai_app/core/widgets/password_text_field.dart';
 import 'package:fcai_app/features/authentication/view/widgets/swap_auth.dart';
-import 'package:fcai_app/features/user_profile/view/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -101,7 +101,7 @@ class _LoginViewState extends State<LoginView> {
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => UserProfile(userModel: user)),
+      MaterialPageRoute(builder: (context) => FcaiAppNavigation()),
     );
   }
 }

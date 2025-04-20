@@ -1,17 +1,14 @@
 import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/features/stores/model/store_model.dart';
+import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class StoreItem extends StatefulWidget {
+class StoreItem extends StatelessWidget {
   const StoreItem({super.key, required this.nearbyPlacesModel});
 
   final StoreModel nearbyPlacesModel;
 
-  @override
-  State<StoreItem> createState() => _StoreItemState();
-}
-
-class _StoreItemState extends State<StoreItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,7 +19,7 @@ class _StoreItemState extends State<StoreItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
-                  Helpers.getCategoryImage(widget.nearbyPlacesModel.category),
+                  Helpers.getCategoryImage(nearbyPlacesModel.category),
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover),
@@ -32,7 +29,7 @@ class _StoreItemState extends State<StoreItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.nearbyPlacesModel.name,
+                      nearbyPlacesModel.name,
                       style: TextStyle(
                           overflow: TextOverflow.ellipsis,
                           fontSize: 18,
@@ -41,7 +38,7 @@ class _StoreItemState extends State<StoreItem> {
                     ),
                     SizedBox(height: 3),
                     Text(
-                      widget.nearbyPlacesModel.category,
+                      nearbyPlacesModel.category,
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 14,
@@ -52,7 +49,7 @@ class _StoreItemState extends State<StoreItem> {
                     ),
                     SizedBox(height: 3),
                     Text(
-                      widget.nearbyPlacesModel.address,
+                      nearbyPlacesModel.address,
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 14,
@@ -73,7 +70,7 @@ class _StoreItemState extends State<StoreItem> {
                           width: 3,
                         ),
                         Text(
-                          "${(widget.nearbyPlacesModel.distance / 1000).toStringAsFixed(2)} km",
+                          "${(nearbyPlacesModel.distance / 1000).toStringAsFixed(2)} km",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -88,17 +85,17 @@ class _StoreItemState extends State<StoreItem> {
               ),
               IconButton(
                 icon: Icon(
-                  widget.nearbyPlacesModel.isFav
+                  nearbyPlacesModel.isFav
                       ? Icons.favorite
                       : Icons.favorite_border,
                   size: 30,
                 ),
                 color:
-                    widget.nearbyPlacesModel.isFav ? Colors.red : Colors.grey,
+                    nearbyPlacesModel.isFav ? Colors.red : Colors.grey,
                 onPressed: () {
-                  widget.nearbyPlacesModel.isFav =
-                      !widget.nearbyPlacesModel.isFav;
-                  setState(() {});
+                   Provider.of<StoresProvider>(context, listen: false)
+                      .toggleFav(nearbyPlacesModel);
+
                 },
               )
             ],
