@@ -1,13 +1,15 @@
 import 'package:fcai_app/core/models/user_model.dart';
+import 'package:fcai_app/features/stores/model/store_model.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class HiveService<T> {
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserModelAdapter());
+    Hive.registerAdapter(StoreModelAdapter());
   }
 
-  Future<Box<T>> openBox<T>({required String boxName}) async {
+  Future<Box<T>> openBox({required String boxName}) async {
     return await Hive.openBox<T>(boxName);
   }
 

@@ -129,13 +129,11 @@ class _SignUpViewState extends State<SignUpView> {
   Future<void> _handleSignUp() async {
     if (!formKey.currentState!.validate()) return;
 
-    Box<UserModel> box;
 
-    if (!hiveService.isBoxOpen(boxName: "user")) {
-      box = await hiveService.openBox<UserModel>(boxName: "user");
-    } else {
-      box = Hive.box<UserModel>("user");
-    }
+    final boxName = "user";
+    final box = !hiveService.isBoxOpen(boxName: boxName)
+        ? await hiveService.openBox(boxName: boxName)
+        : Hive.box<UserModel>(boxName);
 
     if (!mounted) return;
 

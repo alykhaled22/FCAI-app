@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:fcai_app/features/stores/model/nearby_places_model.dart';
+import 'package:fcai_app/features/stores/model/store_model.dart';
 
-class NearbyPlacesApi {
+class NearbyStoresApi {
   final Dio dio;
 
-  NearbyPlacesApi({required this.dio});
+  NearbyStoresApi({required this.dio});
 
-  Future<List<NearbyPlacesModel>> fetchNearbyPlaces(
+  Future<List<StoreModel>> fetchNearbyStores(
       double latitude, double longitude) async {
     try {
       final response = await dio.get(
@@ -16,10 +16,10 @@ class NearbyPlacesApi {
       Map<String, dynamic> jsonData = response.data;
       List<dynamic> nearbyPlaces = jsonData["results"];
 
-      List<NearbyPlacesModel> nearbyPlacesList = [];
+      List<StoreModel> nearbyPlacesList = [];
 
       for (var place in nearbyPlaces) {
-        nearbyPlacesList.add(NearbyPlacesModel.fromJson(place));
+        nearbyPlacesList.add(StoreModel.fromJson(place));
       }
 
       return nearbyPlacesList;

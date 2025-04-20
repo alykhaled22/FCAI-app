@@ -9,7 +9,7 @@ class FCAIApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const LoginView(),
+      home: const StoresView(),
     );
   }
 }

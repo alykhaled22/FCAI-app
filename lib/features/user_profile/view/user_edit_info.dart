@@ -155,13 +155,11 @@ class _UserEditInfoState extends State<UserEditInfo> {
         imageUrl: image != null ? image!.path : "",
       );
 
-      Box<UserModel> box;
 
-      if (!hiveService.isBoxOpen(boxName: "user")) {
-        box = await hiveService.openBox<UserModel>(boxName: "user");
-      } else {
-        box = Hive.box<UserModel>("user");
-      }
+      final boxName = "user";
+      final box = !hiveService.isBoxOpen(boxName: boxName)
+          ? await hiveService.openBox(boxName: boxName)
+          : Hive.box<UserModel>(boxName);
 
       if (updatedUser.email != widget.userModel.email) {
         await hiveService.deleteData(box: box, key: widget.userModel.email);

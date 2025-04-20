@@ -83,7 +83,7 @@ class _LoginViewState extends State<LoginView> {
 
     final boxName = "user";
     final box = !hiveService.isBoxOpen(boxName: boxName)
-        ? await hiveService.openBox<UserModel>(boxName: boxName)
+        ? await hiveService.openBox(boxName: boxName)
         : Hive.box<UserModel>(boxName);
 
     final email = emailController.text.trim();

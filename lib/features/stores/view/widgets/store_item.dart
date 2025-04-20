@@ -1,11 +1,11 @@
 import 'package:fcai_app/core/utils/helpers.dart';
-import 'package:fcai_app/features/stores/model/nearby_places_model.dart';
+import 'package:fcai_app/features/stores/model/store_model.dart';
 import 'package:flutter/material.dart';
 
 class StoreItem extends StatefulWidget {
   const StoreItem({super.key, required this.nearbyPlacesModel});
 
-  final NearbyPlacesModel nearbyPlacesModel;
+  final StoreModel nearbyPlacesModel;
 
   @override
   State<StoreItem> createState() => _StoreItemState();
@@ -21,8 +21,11 @@ class _StoreItemState extends State<StoreItem> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(Helpers.getCategoryImage(widget.nearbyPlacesModel.category),
-                  width: 50, height: 50, fit: BoxFit.cover),
+              Image.asset(
+                  Helpers.getCategoryImage(widget.nearbyPlacesModel.category),
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover),
               SizedBox(width: 30),
               Expanded(
                 child: Column(

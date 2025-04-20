@@ -36,6 +36,7 @@ dependencies:
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.1
   image_picker: ^1.1.2
+  provider: ^6.1.4
 
 dev_dependencies:
   flutter_lints: ^5.0.0
@@ -75,7 +76,7 @@ flutter:
       fonts:
         - asset: assets/fonts/Montserrat-Bold.ttf
           weight: 700
-          
+
     - family: GT Sectra Fine
       fonts:
         - asset: assets/fonts/GT Sectra Fine Regular.ttf

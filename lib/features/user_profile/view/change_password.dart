@@ -93,13 +93,10 @@ class _ChangePasswordState extends State<ChangePassword> {
         imageUrl: widget.userModel.imageUrl,
       );
 
-      Box<UserModel> box;
-
-      if (!hiveService.isBoxOpen(boxName: "user")) {
-        box = await hiveService.openBox(boxName: "user");
-      } else {
-        box = Hive.box<UserModel>("user");
-      }
+      final boxName = "user";
+      final box = !hiveService.isBoxOpen(boxName: boxName)
+          ? await hiveService.openBox(boxName: boxName)
+          : Hive.box<UserModel>(boxName);
 
       await hiveService.putData(
           box: box, key: updatedUser.email, value: updatedUser);

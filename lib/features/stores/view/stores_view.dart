@@ -1,7 +1,7 @@
-import 'package:fcai_app/features/stores/view/widgets/custom_app_bar.dart';
-import 'package:fcai_app/features/stores/view/widgets/search_bar.dart';
-import 'package:fcai_app/features/stores/view/widgets/stores_list_view_builder.dart';
+import 'package:fcai_app/features/stores/view/stores_view_body.dart';
+import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StoresView extends StatelessWidget {
   const StoresView({super.key});
@@ -10,26 +10,13 @@ class StoresView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF5F5F5),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              SizedBox(height: 10),
-              CustomAppBar(),
-              SizedBox(height: 10),
-              SearchStoresBar(),
-              SizedBox(height: 20),
-              Expanded(
-                child: CustomScrollView(
-                  slivers: [
-                    StoresListViewBuilder(),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+      body: ChangeNotifierProvider(
+        create: (context) {
+          final provider = StoresProvider();
+          provider.init();
+          return provider;
+        },
+        child: StoresViewBody(),
       ),
     );
   }
