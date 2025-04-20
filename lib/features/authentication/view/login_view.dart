@@ -9,8 +9,9 @@ import 'package:fcai_app/fcai_app_navigation.dart';
 import 'package:fcai_app/features/authentication/view/sign_up_view.dart';
 import 'package:fcai_app/core/widgets/password_text_field.dart';
 import 'package:fcai_app/features/authentication/view/widgets/swap_auth.dart';
+import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -80,28 +81,22 @@ class _LoginViewState extends State<LoginView> {
 
   Future<void> _handleLogin() async {
     if (!formKey.currentState!.validate()) return;
-
-    final boxName = "user";
-    final box = !hiveService.isBoxOpen(boxName: boxName)
-        ? await hiveService.openBox(boxName: boxName)
-        : Hive.box<UserModel>(boxName);
-
     final email = emailController.text.trim();
     final password = passwordController.text;
-    final user = hiveService.getData(box: box, key: email);
 
-    if (user == null || user.password != password) {
+    final authProvider = Provider.of<UserProvider>(context, listen: false);
+    final success = await authProvider.loginUser(email, password);
+
+    if (!success) {
       if (!mounted) return;
       Helpers.showErrorSnackBar(context, "Invalid email or password");
-      return;
+    } else {
+      if (!mounted) return;
+      Helpers.showSuccessSnackBar(context, "Login successful!");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => FcaiAppNavigation()),
+      );
     }
-
-    if (!mounted) return;
-    Helpers.showSuccessSnackBar(context, "Login successful!");
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => FcaiAppNavigation()),
-    );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:fcai_app/features/stores/view/widgets/search_bar.dart';
 import 'package:fcai_app/features/stores/view/widgets/stores_list_view_builder.dart';
 import 'package:fcai_app/features/stores/view/widgets/stores_view_header.dart';
 import 'package:flutter/material.dart';

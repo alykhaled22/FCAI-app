@@ -9,8 +9,9 @@ import 'package:fcai_app/core/widgets/gender_radio.dart';
 import 'package:fcai_app/core/widgets/level_dropdown.dart';
 import 'package:fcai_app/core/widgets/password_text_field.dart';
 import 'package:fcai_app/features/authentication/view/widgets/swap_auth.dart';
+import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -129,30 +130,29 @@ class _SignUpViewState extends State<SignUpView> {
   Future<void> _handleSignUp() async {
     if (!formKey.currentState!.validate()) return;
 
-
-    final boxName = "user";
-    final box = !hiveService.isBoxOpen(boxName: boxName)
-        ? await hiveService.openBox(boxName: boxName)
-        : Hive.box<UserModel>(boxName);
+    final email = emailController.text.trim();
 
     if (!mounted) return;
 
-    if (box.containsKey(emailController.text)) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("User with the same Email already exists!")));
+    final authProvider = Provider.of<UserProvider>(context, listen: false);
+    final success = await authProvider.isUserExists(email);
+
+    if (success) {
+      if (!mounted) return;
+      Helpers.showErrorSnackBar(
+          context, "User with the same Email already exists!");
       return;
+    } else {
+      UserModel user = UserModel(
+        id: idController.text,
+        name: nameController.text,
+        email: email,
+        password: passwordController.text,
+        gender: selectedGender,
+        level: selectedLevel,
+      );
+      await authProvider.registerUser(user, email);
     }
-
-    UserModel user = UserModel(
-      id: idController.text,
-      name: nameController.text,
-      email: emailController.text,
-      password: passwordController.text,
-      gender: selectedGender,
-      level: selectedLevel,
-    );
-
-    await hiveService.putData(box: box, key: emailController.text, value: user);
 
     if (!mounted) return;
 

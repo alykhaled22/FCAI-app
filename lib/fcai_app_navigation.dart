@@ -18,7 +18,7 @@ class _FcaiAppNavigationState extends State<FcaiAppNavigation> {
   final List<Widget> _screens = const [
     StoresView(),
     FavStoresView(),
-    // UserProfile(),
+    UserProfile(),
   ];
 
   @override

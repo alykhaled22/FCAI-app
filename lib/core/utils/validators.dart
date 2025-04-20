@@ -35,7 +35,8 @@ class Validators {
     return null;
   }
 
-  static String? validateOldPassword(String? value,{required String oldPassword}) {
+  static String? validateOldPassword(String? value,
+      {required String oldPassword}) {
     if (value == null || value.isEmpty) {
       return "This field is required";
     }
@@ -70,7 +71,7 @@ class Validators {
     return null;
   }
 
-  static String? validateStudentIdWithContext(
+  static String? validateUpdatedStudentId(
     String? value, {
     required String currentEmail,
     required String originalEmail,
@@ -88,7 +89,7 @@ class Validators {
     return null;
   }
 
-  static String? validateFcaiEmailWithContext(
+  static String? validateUpdatedFcaiEmail(
     String? value, {
     required String currentID,
     required String originalID,

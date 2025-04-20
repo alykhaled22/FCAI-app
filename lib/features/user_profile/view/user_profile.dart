@@ -1,89 +1,74 @@
-import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
+import 'package:fcai_app/features/authentication/view/login_view.dart';
+import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
 import 'package:fcai_app/features/user_profile/view/change_password.dart';
 import 'package:fcai_app/features/user_profile/view/user_edit_info.dart';
 import 'package:fcai_app/features/user_profile/view/widgets/custom_app_bar.dart';
 import 'package:fcai_app/features/user_profile/view/widgets/image_avatar.dart';
 import 'package:fcai_app/features/user_profile/view/widgets/info_body.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({super.key, required this.userModel});
-
-  final UserModel userModel;
-
-  @override
-  State<UserProfile> createState() => _UserProfileState();
-}
-
-class _UserProfileState extends State<UserProfile> {
-  late UserModel userModel;
-
-  @override
-  void initState() {
-    super.initState();
-    userModel = widget.userModel;
-  }
+class UserProfile extends StatelessWidget {
+  const UserProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 25),
-      child: Column(
-        children: [
-          CustomAppBar(
-              iconL: Icons.logout_outlined,
-              iconR: Icons.edit_note_rounded,
-              onPressedL: () {
-                Navigator.pop(context);
-              },
-              onPressedR: () async {
-                final updatedUser = await Navigator.push(
+    final userModel = Provider.of<UserProvider>(context).currentUser;
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 25),
+        child: Column(
+          children: [
+            CustomAppBar(
+                iconL: Icons.logout_outlined,
+                iconR: Icons.edit_note_rounded,
+                onPressedL: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginView(),
+                    ),
+                  );
+                },
+                onPressedR: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserEditInfo(),
+                    ),
+                  );
+                }),
+            ImageAvatar(
+              image: userModel.imageUrl,
+              gender: userModel.gender ?? "",
+            ),
+            const SizedBox(height: 20),
+            Text(
+              userModel.name,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Poppins",
+              ),
+            ),
+            const SizedBox(height: 60),
+            InfoBody(userModel: userModel),
+            const SizedBox(height: 60),
+            CustomButton(
+              label: "Change password",
+              onPressed: () {
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => UserEditInfo(
-                      userModel: userModel,
-                    ),
+                    builder: (context) => ChangePassword(),
                   ),
                 );
-
-                if (updatedUser is UserModel) {
-                  setState(() {
-                    userModel = updatedUser;
-                  });
-                }
-              }),
-          ImageAvatar(
-            image: userModel.imageUrl,
-            gender: userModel.gender ?? "",
-          ),
-          const SizedBox(height: 20),
-          Text(
-            userModel.name,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              fontFamily: "Poppins",
+              },
+              color: 0xff247CFF,
             ),
-          ),
-          const SizedBox(height: 60),
-          InfoBody(userModel: userModel),
-          const SizedBox(height: 60),
-          CustomButton(
-            label: "Change password",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChangePassword(
-                    userModel: userModel,
-                  ),
-                ),
-              );
-            },
-            color: 0xff247CFF,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,16 +1,15 @@
 import 'package:fcai_app/core/models/user_model.dart';
-import 'package:fcai_app/core/services/hive_service.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/password_text_field.dart';
+import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
 
 class ChangePassword extends StatefulWidget {
-  const ChangePassword({super.key, required this.userModel});
-  final UserModel userModel;
+  const ChangePassword({super.key});
 
   @override
   State<ChangePassword> createState() => _ChangePasswordState();
@@ -22,7 +21,14 @@ class _ChangePasswordState extends State<ChangePassword> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final HiveService hiveService = HiveService();
+
+  late UserModel currentUser;
+
+  @override
+  void initState() {
+    currentUser = Provider.of<UserProvider>(context, listen: false).currentUser;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +52,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     controller: oldPasswordController,
                     validator: (value) => Validators.validateOldPassword(
                       value,
-                      oldPassword: widget.userModel.password,
+                      oldPassword: currentUser.password,
                     ),
                   ),
                   SizedBox(height: 20),
@@ -82,29 +88,29 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   Future<void> _handleChangePass() async {
-    if (formKey.currentState!.validate()) {
-      UserModel updatedUser = UserModel(
-        name: widget.userModel.name,
-        id: widget.userModel.id,
-        email: widget.userModel.email,
-        password: passwordController.text,
-        gender: widget.userModel.gender,
-        level: widget.userModel.level,
-        imageUrl: widget.userModel.imageUrl,
-      );
+    if (!formKey.currentState!.validate()) return;
 
-      final boxName = "user";
-      final box = !hiveService.isBoxOpen(boxName: boxName)
-          ? await hiveService.openBox(boxName: boxName)
-          : Hive.box<UserModel>(boxName);
+    UserModel updatedUser = UserModel(
+      name: currentUser.name,
+      id: currentUser.id,
+      email: currentUser.email,
+      password: passwordController.text,
+      gender: currentUser.gender,
+      level: currentUser.level,
+      imageUrl: currentUser.imageUrl,
+    );
 
-      await hiveService.putData(
-          box: box, key: updatedUser.email, value: updatedUser);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-      if (!mounted) return;
+    await userProvider.updateUser(
+      updatedUser,
+      currentUser.email,
+      currentUser.email,
+    );
 
-      Helpers.showSuccessSnackBar(context, "Password changed scuccessfully!");
-      Navigator.pop(context);
-    }
+    if (!mounted) return;
+
+    Helpers.showSuccessSnackBar(context, "Password changed scuccessfully!");
+    Navigator.pop(context);
   }
 }
