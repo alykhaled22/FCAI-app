@@ -5,7 +5,7 @@ import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
-import 'package:fcai_app/fcai_app_navigation.dart';
+import 'package:fcai_app/core/view/app_navigation.dart';
 import 'package:fcai_app/features/authentication/view/sign_up_view.dart';
 import 'package:fcai_app/core/widgets/password_text_field.dart';
 import 'package:fcai_app/features/authentication/view/widgets/swap_auth.dart';
@@ -30,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xffF5F5F5),
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Padding(
@@ -95,7 +95,7 @@ class _LoginViewState extends State<LoginView> {
       Helpers.showSuccessSnackBar(context, "Login successful!");
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => FcaiAppNavigation()),
+        MaterialPageRoute(builder: (context) => AppNavigation()),
       );
     }
   }

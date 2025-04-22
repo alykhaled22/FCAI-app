@@ -38,7 +38,7 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Color(0xffF5F5F5),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Padding(

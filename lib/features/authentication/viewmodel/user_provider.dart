@@ -59,4 +59,5 @@ class UserProvider extends ChangeNotifier {
     await hiveService.putData(box: box, key: user.email, value: user);
     notifyListeners();
   }
+
 }

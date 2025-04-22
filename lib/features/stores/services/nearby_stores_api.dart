@@ -10,7 +10,7 @@ class NearbyStoresApi {
       double latitude, double longitude) async {
     try {
       final response = await dio.get(
-        'https://api.tomtom.com/search/2/nearbySearch/.json?key=2LbpD11zrDIpluLFEKOHVV6JPwSzhMvi&lat=36.98844&lon=-121.97483&radius=5000&categorySet=9361,7315,7332&limit=50',
+        'https://api.tomtom.com/search/2/nearbySearch/.json?key=2LbpD11zrDIpluLFEKOHVV6JPwSzhMvi&lat=$latitude&lon=$longitude&radius=10000&categorySet=9361,7315,7332&limit=50',
       );
 
       Map<String, dynamic> jsonData = response.data;
