@@ -1,3 +1,4 @@
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -63,10 +64,11 @@ class LocationService {
               Container(
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(244, 67, 54, 0.1),
+                  color: AppColors.primaryColorWithOpacity,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.location_off, size: 36, color: Colors.red),
+                child: Icon(Icons.location_off,
+                    size: 36, color: AppColors.primaryColor),
               ),
               const SizedBox(height: 16),
               const Text(
@@ -108,7 +110,7 @@ class LocationService {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff4F46E5),
+                          backgroundColor: AppColors.primaryColor,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
                         child: const Text(

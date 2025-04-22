@@ -1,4 +1,5 @@
 import 'package:fcai_app/core/models/user_model.dart';
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
@@ -76,7 +77,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   CustomButton(
                     label: "Save password",
                     onPressed: () async => await _handleChangePass(),
-                    color: 0xff247CFF,
+                    color: AppColors.primaryColor,
                   )
                 ],
               ),

@@ -1,3 +1,4 @@
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/viewmodel/navigation_provider.dart';
 import 'package:fcai_app/features/stores/view/fav_stores_view.dart';
 import 'package:fcai_app/features/stores/view/stores_view.dart';
@@ -35,7 +36,7 @@ class AppNavigationBody extends StatelessWidget {
                 onTap: (index) {
                   provider.changeTab(index);
                 },
-                selectedItemColor: Color(0xff4F46E5),
+                selectedItemColor: AppColors.primaryColor,
                 backgroundColor: Color(0xFFF2F4F7),
                 items: const [
                   BottomNavigationBarItem(

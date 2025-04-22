@@ -1,3 +1,4 @@
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class HolderView extends StatelessWidget {
@@ -25,7 +26,7 @@ class HolderView extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(12),
           decoration: const BoxDecoration(
-            color: Color.fromRGBO(79, 70, 229, 0.1),
+            color: AppColors.primaryColorWithOpacity,
             shape: BoxShape.circle,
           ),
           child: icon,
@@ -50,7 +51,7 @@ class HolderView extends StatelessWidget {
           child: ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xff4F46E5),
+              backgroundColor: AppColors.primaryColor,
               padding: const EdgeInsets.symmetric(vertical: 14),
             ),
             child: Text(

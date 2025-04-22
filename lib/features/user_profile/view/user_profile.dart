@@ -1,3 +1,4 @@
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/widgets/custom_button.dart';
 import 'package:fcai_app/features/authentication/view/login_view.dart';
 import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
@@ -65,7 +66,7 @@ class UserProfile extends StatelessWidget {
                   ),
                 );
               },
-              color: 0xff247CFF,
+              color: AppColors.primaryColor,
             ),
           ],
         ),

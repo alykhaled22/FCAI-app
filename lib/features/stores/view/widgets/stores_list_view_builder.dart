@@ -1,3 +1,4 @@
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/features/stores/view/widgets/holder_view.dart';
 import 'package:fcai_app/features/stores/view/widgets/stores_list_view.dart';
 import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
@@ -25,7 +26,7 @@ class StoresListViewBuilder extends StatelessWidget {
           return SliverToBoxAdapter(
             child: HolderView(
               icon: const Icon(Icons.location_off,
-                  size: 36, color: Color(0xff4F46E5)),
+                  size: 36, color: AppColors.primaryColor),
               title: "No Stores Found",
               message:
                   "Maybe there was a problem with your location, please reload the page to fetch nerby stores.",

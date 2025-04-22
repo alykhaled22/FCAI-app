@@ -1,5 +1,6 @@
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
@@ -108,7 +109,7 @@ class _SignUpViewState extends State<SignUpView> {
                 CustomButton(
                     label: "Sign up",
                     onPressed: () async => await _handleSignUp(),
-                    color: 0xff247CFF),
+                    color: AppColors.primaryColor),
                 SizedBox(
                   height: 10,
                 ),

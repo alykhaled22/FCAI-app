@@ -1,3 +1,4 @@
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/viewmodel/navigation_provider.dart';
 import 'package:fcai_app/features/stores/view/widgets/holder_view.dart';
 import 'package:fcai_app/features/stores/view/widgets/store_item.dart';
@@ -17,7 +18,7 @@ class FavStoresListView extends StatelessWidget {
       return SliverToBoxAdapter(
         child: HolderView(
           icon: const Icon(Icons.favorite,
-              size: 36, color: Color(0xff4F46E5)),
+              size: 36, color: AppColors.primaryColor),
           title: "No favorites yet",
           message:
               "Add stores to your favorites by tapping the heart icon on stores you like.",
