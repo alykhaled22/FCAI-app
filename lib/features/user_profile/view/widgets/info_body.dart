@@ -1,5 +1,5 @@
 import 'package:fcai_app/core/models/user_model.dart';
-import 'package:fcai_app/core/widgets/custom_text_field.dart';
+import 'package:fcai_app/features/user_profile/view/widgets/card_item.dart';
 import 'package:flutter/material.dart';
 
 class InfoBody extends StatelessWidget {
@@ -7,58 +7,60 @@ class InfoBody extends StatelessWidget {
 
   final UserModel userModel;
 
+  static const levels = {
+    "1": "Freshman",
+    "2": "Sophomore",
+    "3": "Junior",
+    "4": "Senior",
+  };
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CustomTextField(
-          readOnly: true,
-          controller: TextEditingController(text: userModel.email),
-          validator: (value) {
-            return null;
-          },
-          label: "Email",
-          icon: Icons.email,
-        ),
-        SizedBox(height: 20),
-        CustomTextField(
-          readOnly: true,
-          validator: (value) {
-            return null;
-          },
-          controller: TextEditingController(text: userModel.id),
-          label: "Student ID",
-          icon: Icons.confirmation_number,
-        ),
-        SizedBox(height: 20),
-        Row(
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      elevation: 10,
+      color: const Color.fromARGB(255, 247, 248, 253),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: CustomTextField(
-                readOnly: true,
-                validator: (value) {
-                  return null;
-                },
-                controller: TextEditingController(text: userModel.level ?? ""),
-                label: "Level",
-                icon: Icons.school,
+            Text(
+              "Personal Information",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: "GT Sectra Fine"
               ),
             ),
-            SizedBox(width: 10),
-            Expanded(
-              child: CustomTextField(
-                readOnly: true,
-                validator: (value) {
-                  return null;
-                },
-                controller: TextEditingController(text: userModel.gender ?? ""),
-                label: "Gender",
-                icon: Icons.person,
-              ),
+            const SizedBox(height: 20),
+            CardItem(
+              label: "ID",
+              info: userModel.id.toString(),
+            ),
+            const SizedBox(height: 10),
+            CardItem(
+              label: "Email",
+              info: userModel.email,
+            ),
+            const SizedBox(height: 10),
+            CardItem(
+              label: "Gender",
+              info: userModel.gender ?? "Unknown",
+            ),
+            const SizedBox(height: 10),
+            CardItem(
+              label: "level",
+              info: userModel.level != null
+                  ? "${userModel.level} (${levels[userModel.level]})"
+                  : "Unknown",
+              last: true,
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }

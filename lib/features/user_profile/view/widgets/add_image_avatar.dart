@@ -1,4 +1,5 @@
 import 'package:fcai_app/core/models/user_model.dart';
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/features/user_profile/view/widgets/image_avatar.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class AddImageAvatar extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: AppColors.primaryColor,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(

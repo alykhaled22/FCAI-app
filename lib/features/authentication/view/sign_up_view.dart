@@ -4,11 +4,12 @@ import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
-import 'package:fcai_app/core/widgets/custom_button.dart';
+import 'package:fcai_app/features/user_profile/view/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/core/widgets/gender_radio.dart';
 import 'package:fcai_app/core/widgets/level_dropdown.dart';
 import 'package:fcai_app/core/widgets/password_text_field.dart';
+import 'package:fcai_app/features/authentication/view/widgets/auth_button.dart';
 import 'package:fcai_app/features/authentication/view/widgets/swap_auth.dart';
 import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -106,10 +107,10 @@ class _SignUpViewState extends State<SignUpView> {
                   ),
                 ),
                 SizedBox(height: 40),
-                CustomButton(
-                    label: "Sign up",
-                    onPressed: () async => await _handleSignUp(),
-                    color: AppColors.primaryColor),
+                AuthButton(
+                  label: "Sign up",
+                  onPressed: () async => await _handleSignUp(),
+                ),
                 SizedBox(
                   height: 10,
                 ),

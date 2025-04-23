@@ -46,7 +46,7 @@ class _LevelDropDownState extends State<LevelDropDown> {
           borderRadius: BorderRadius.circular(10),
         )),
       ),
-      width: 150,
+      width: double.infinity,
       initialSelection: selectedValue,
       onSelected: (value) {
         setState(() {

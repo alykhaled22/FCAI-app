@@ -3,7 +3,8 @@ import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
-import 'package:fcai_app/core/widgets/custom_button.dart';
+import 'package:fcai_app/features/authentication/view/widgets/auth_button.dart';
+import 'package:fcai_app/features/user_profile/view/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/password_text_field.dart';
 import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xffF5F5F5),
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Padding(
@@ -74,10 +75,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                   SizedBox(
                     height: 40,
                   ),
-                  CustomButton(
+                  AuthButton(
                     label: "Save password",
                     onPressed: () async => await _handleChangePass(),
-                    color: AppColors.primaryColor,
                   )
                 ],
               ),

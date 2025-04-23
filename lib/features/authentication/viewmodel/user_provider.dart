@@ -40,7 +40,6 @@ class UserProvider extends ChangeNotifier {
         ? await hiveService.openBox(boxName: boxName)
         : Hive.box<UserModel>(boxName);
     await hiveService.putData(box: box, key: user.email, value: user);
-    
   }
 
   Future<void> updateUser(
@@ -60,4 +59,12 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void logoutUser() {
+    currentUser = UserModel(
+      name: "",
+      id: "",
+      email: "",
+      password: "",
+    );
+  }
 }

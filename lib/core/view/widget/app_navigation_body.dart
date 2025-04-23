@@ -23,7 +23,7 @@ class AppNavigationBody extends StatelessWidget {
         backgroundColor: Colors.white,
         body: screens[provider.currentIndex],
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 12.0, left: 16.0, right: 16.0),
+          padding: const EdgeInsets.only(bottom: 12.0, left: 16.0, right: 16.0, top: 8.0),
           child: Material(
             elevation: 10,
             borderRadius: BorderRadius.circular(20),

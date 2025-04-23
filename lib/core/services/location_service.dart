@@ -91,6 +91,9 @@ class LocationService {
                     child: OutlinedButton(
                       onPressed: () => Navigator.pop(context, false),
                       style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         padding: EdgeInsets.symmetric(vertical: 14),
                       ),
                       child: const Text("Cancel"),
@@ -110,6 +113,9 @@ class LocationService {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           backgroundColor: AppColors.primaryColor,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
