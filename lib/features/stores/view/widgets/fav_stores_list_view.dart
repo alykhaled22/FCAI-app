@@ -16,7 +16,7 @@ class FavStoresListView extends StatelessWidget {
 
     if (favStores.isEmpty) {
       return SliverToBoxAdapter(
-        child: HolderView(
+        child: HolderBody(
           icon: const Icon(Icons.favorite,
               size: 36, color: AppColors.primaryColor),
           title: "No favorites yet",

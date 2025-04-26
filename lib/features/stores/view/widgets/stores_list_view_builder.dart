@@ -1,5 +1,6 @@
 import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/features/stores/view/widgets/holder_view.dart';
+import 'package:fcai_app/features/stores/view/widgets/loading_stores_view.dart';
 import 'package:fcai_app/features/stores/view/widgets/stores_list_view.dart';
 import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
 import 'package:flutter/material.dart';
@@ -13,18 +14,14 @@ class StoresListViewBuilder extends StatelessWidget {
     return Consumer<StoresProvider>(
       builder: (context, provider, child) {
         if (provider.isLoading) {
-          return const SliverToBoxAdapter(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return LoadingStoresView();
         } else if (provider.stores.isNotEmpty) {
           return StoresListView(
             nearbyStoresModel: provider.stores,
           );
         } else {
           return SliverToBoxAdapter(
-            child: HolderView(
+            child: HolderBody(
               icon: const Icon(Icons.location_off,
                   size: 36, color: AppColors.primaryColor),
               title: "No Stores Found",

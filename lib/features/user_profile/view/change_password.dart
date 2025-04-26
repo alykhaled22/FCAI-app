@@ -70,13 +70,20 @@ class _ChangePasswordState extends State<ChangePassword> {
                     label: "Confirm new password",
                     controller: confirmPasswordController,
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  SizedBox(height: 40),
                   AuthButton(
                     label: "Save password",
                     onPressed: () async => await _handleChangePass(),
-                  )
+                  ),
+                  SizedBox(height: 20),
+                  AuthButton(
+                    label: "Cancel",
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    buttonColor: Colors.white,
+                    buttonTextColor: Colors.black,
+                  ),
                 ],
               ),
             ),

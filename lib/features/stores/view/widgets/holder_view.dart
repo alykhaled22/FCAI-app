@@ -1,13 +1,15 @@
 import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class HolderView extends StatelessWidget {
-  const HolderView(
-      {super.key,
-      required this.icon,
-      required this.message,
-      required this.title,
-      required this.buttonText, required this.onPressed});
+class HolderBody extends StatelessWidget {
+  const HolderBody({
+    super.key,
+    required this.icon,
+    required this.message,
+    required this.title,
+    required this.buttonText,
+    required this.onPressed,
+  });
   final Icon icon;
   final String title;
   final String message;
