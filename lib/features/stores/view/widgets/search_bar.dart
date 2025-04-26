@@ -1,3 +1,4 @@
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SearchStoresBar extends StatelessWidget {
@@ -7,7 +8,7 @@ class SearchStoresBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 228, 228, 228),
+          color: AppColors.secondaryColor,
           border: Border.all(color: Colors.grey[300]!),
           borderRadius: BorderRadius.circular(20),
         ),

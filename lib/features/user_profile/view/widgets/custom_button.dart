@@ -6,7 +6,8 @@ class CustomButton extends StatelessWidget {
       required this.label,
       required this.onPressed,
       required this.buttonColor,
-      this.textColor = Colors.white, required this.icon});
+      this.textColor = Colors.white,
+      required this.icon});
   final String label;
   final VoidCallback onPressed;
   final Color buttonColor;
@@ -15,37 +16,29 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        width: double.infinity,
-        height: 50,
-        decoration: BoxDecoration(
-          color: buttonColor,
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 8,
-              offset: Offset(0, 5),
-            ),
-          ],
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            icon,
-            const SizedBox(width: 5),
-            Text(
-              label,
-              style: TextStyle(
-                color: textColor,
-                fontSize: 18,
-              ),
+        padding: EdgeInsets.symmetric(vertical: 14),
+        backgroundColor: buttonColor,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          icon,
+          const SizedBox(width: 5),
+          Text(
+            label,
+            style: TextStyle(
+              color: textColor,
+              fontSize: 18,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

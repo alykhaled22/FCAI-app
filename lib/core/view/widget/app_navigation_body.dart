@@ -23,7 +23,8 @@ class AppNavigationBody extends StatelessWidget {
         backgroundColor: Colors.white,
         body: screens[provider.currentIndex],
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 12.0, left: 16.0, right: 16.0, top: 8.0),
+          padding: const EdgeInsets.only(
+              bottom: 12.0, left: 16.0, right: 16.0, top: 8.0),
           child: Material(
             elevation: 10,
             borderRadius: BorderRadius.circular(20),
@@ -37,7 +38,7 @@ class AppNavigationBody extends StatelessWidget {
                   provider.changeTab(index);
                 },
                 selectedItemColor: AppColors.primaryColor,
-                backgroundColor: Color(0xFFF2F4F7),
+                backgroundColor: AppColors.secondaryColor,
                 items: const [
                   BottomNavigationBarItem(
                     icon: Icon(Icons.store),

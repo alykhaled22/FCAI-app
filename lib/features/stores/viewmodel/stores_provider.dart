@@ -56,9 +56,8 @@ class StoresProvider with ChangeNotifier {
       }
       stores = box.values.toList();
     } catch (e) {
-      print("Error fetching stores: $e");
-    }
-
+      debugPrint("Error fetching stores: $e");
+    } 
     isLoading = false;
     notifyListeners();
   }

@@ -5,9 +5,9 @@ import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/core/widgets/gender_radio.dart';
 import 'package:fcai_app/core/widgets/level_dropdown.dart';
+import 'package:fcai_app/features/authentication/view/widgets/auth_button.dart';
 import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
 import 'package:fcai_app/features/user_profile/view/widgets/add_image_avatar.dart';
-import 'package:fcai_app/features/user_profile/view/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -78,22 +78,6 @@ class _UserEditProfileState extends State<UserEditProfile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CustomAppBar(
-                      iconL: Icons.arrow_back_ios,
-                      iconR: Icons.done,
-                      onPressedL: () async {
-                        if (!isDataChanged()) {
-                          Navigator.of(context).pop();
-                          return;
-                        }
-                        final confirm = await didPop();
-                        if (confirm) {
-                          if (!context.mounted) return;
-                          Navigator.of(context).pop();
-                        }
-                      },
-                      onPressedR: () async => await _handleEditProfile(),
-                    ),
                     AddImageAvatar(
                       image: image?.path ?? "",
                       userModel: currentUser,
@@ -149,6 +133,28 @@ class _UserEditProfileState extends State<UserEditProfile> {
                         },
                       ),
                     ),
+                    SizedBox(height: 35),
+                    AuthButton(
+                      label: "Save Changes",
+                      onPressed: () async => await _handleEditProfile(),
+                    ),
+                    SizedBox(height: 20),
+                    AuthButton(
+                      label: "Cancel",
+                      onPressed: () async {
+                        if (!isDataChanged()) {
+                          Navigator.of(context).pop();
+                          return;
+                        }
+                        final confirm = await didPop();
+                        if (confirm) {
+                          if (!context.mounted) return;
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      buttonColor: Colors.white,
+                      buttonTextColor: Colors.black,
+                    ),
                   ],
                 ),
               ),
@@ -161,6 +167,11 @@ class _UserEditProfileState extends State<UserEditProfile> {
 
   Future<void> _handleEditProfile() async {
     if (!formKey.currentState!.validate()) return;
+
+    if (!isDataChanged()) {
+      Navigator.of(context).pop();
+      return;
+    }
 
     final email = emailController.text.trim();
 
@@ -197,7 +208,7 @@ class _UserEditProfileState extends State<UserEditProfile> {
     if (!mounted) return;
 
     Helpers.showSuccessSnackBar(context, "Edited successfully!");
-    Navigator.pop(context, updatedUser);
+    Navigator.pop(context);
   }
 
   Future<void> pickImage(ImageSource source) async {

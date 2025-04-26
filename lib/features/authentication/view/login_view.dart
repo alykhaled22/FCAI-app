@@ -1,10 +1,8 @@
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
-import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
-import 'package:fcai_app/features/user_profile/view/widgets/custom_button.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/core/view/app_navigation.dart';
 import 'package:fcai_app/features/authentication/view/sign_up_view.dart';

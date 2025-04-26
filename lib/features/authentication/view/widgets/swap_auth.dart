@@ -1,3 +1,4 @@
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SwapAuth extends StatelessWidget {
@@ -17,10 +18,7 @@ class SwapAuth extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            color: Color(0xff757575),
-            fontSize: 14
-          ),
+          style: const TextStyle(color: Color(0xff757575), fontSize: 14),
         ),
         SizedBox(width: 8),
         GestureDetector(
@@ -28,7 +26,7 @@ class SwapAuth extends StatelessWidget {
           child: Text(
             action,
             style: const TextStyle(
-              color: Color(0xff4FA085),
+              color: AppColors.primaryColor,
               fontSize: 14,
             ),
           ),
