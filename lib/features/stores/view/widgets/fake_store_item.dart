@@ -15,7 +15,7 @@ class FakeStoreItem extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset("assets/market.png",
+                Image.asset("assets/images/market.png",
                     width: 50, height: 50, fit: BoxFit.cover),
                 SizedBox(width: 30),
                 Expanded(

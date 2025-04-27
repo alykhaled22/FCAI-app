@@ -15,7 +15,7 @@ class ImageAvatar extends StatelessWidget {
       height: 180,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color:Colors.grey.shade400, width: 5), //
+        border: Border.all(color: Colors.grey.shade400, width: 5), //
         boxShadow: [
           BoxShadow(
             color: Colors.black26,
@@ -29,8 +29,8 @@ class ImageAvatar extends StatelessWidget {
             ? Image.file(File(image!), fit: BoxFit.cover)
             : Image.asset(
                 gender == "Female"
-                    ? 'assets/female_placeholder.png'
-                    : 'assets/male-placeholder.jpg',
+                    ? 'assets/images/female_placeholder.png'
+                    : 'assets/images/male-placeholder.jpg',
                 fit: BoxFit.cover,
               ),
       ),

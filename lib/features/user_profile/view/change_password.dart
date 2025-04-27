@@ -43,7 +43,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               key: formKey,
               child: Column(
                 children: [
-                  Image.asset('assets/ChangePassword.png'),
+                  Image.asset('assets/images/ChangePassword.png'),
                   SizedBox(height: 20),
                   AuthLabel(label: "Change Password", fontSize: 24),
                   SizedBox(height: 20),

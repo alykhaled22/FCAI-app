@@ -1,6 +1,8 @@
 import 'package:fcai_app/features/stores/view/widgets/stores_list_view_builder.dart';
 import 'package:fcai_app/features/stores/view/widgets/stores_view_header.dart';
+import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StoresView extends StatelessWidget {
   const StoresView({super.key});
@@ -11,12 +13,27 @@ class StoresView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          StoresViewHeader(title: "Stores",),
+          StoresViewHeader(
+            title: "Stores",
+          ),
           Expanded(
-            child: CustomScrollView(
-              slivers: [
-                StoresListViewBuilder(),
-              ],
+            child: RefreshIndicator(
+              backgroundColor: Colors.white,
+              onRefresh: () async {
+                return await Future.delayed(
+                  Duration(seconds: 1),
+                  () {
+                    if (!context.mounted) return;
+                    Provider.of<StoresProvider>(context, listen: false)
+                        .fetchAndCacheStores(context);
+                  },
+                );
+              },
+              child: CustomScrollView(
+                slivers: [
+                  StoresListViewBuilder(),
+                ],
+              ),
             ),
           ),
         ],

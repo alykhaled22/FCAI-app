@@ -5,11 +5,11 @@ class Helpers {
     category = category.toLowerCase();
 
     if (category.contains('market')) {
-      return 'assets/market.png';
+      return 'assets/images/market.png';
     } else if (category.contains('restaurant')) {
-      return 'assets/resturant.png';
+      return 'assets/images/resturant.png';
     } else {
-      return 'assets/store.png';
+      return 'assets/images/store.png';
     }
   }
 

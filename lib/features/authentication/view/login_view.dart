@@ -12,6 +12,7 @@ import 'package:fcai_app/features/authentication/view/widgets/swap_auth.dart';
 import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -34,13 +35,13 @@ class _LoginViewState extends State<LoginView> {
         body: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 60),
+            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20),
             child: Form(
               key: formKey,
               child: Column(
                 children: [
-                  Image.asset('assets/Group 1.png'),
-                  SizedBox(height: 60),
+                  Image.asset('assets/images/login3.jpg'),
+                  SizedBox(height: 40),
                   AuthLabel(label: "Login", fontSize: 28),
                   SizedBox(height: 20),
                   CustomTextField(
@@ -93,10 +94,16 @@ class _LoginViewState extends State<LoginView> {
     } else {
       if (!mounted) return;
       Helpers.showSuccessSnackBar(context, "Login successful!");
+      saveLoginState();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AppNavigation()),
       );
     }
+  }
+
+  Future<void> saveLoginState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
   }
 }
