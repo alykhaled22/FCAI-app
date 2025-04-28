@@ -167,12 +167,6 @@ class _UserEditProfileState extends State<UserEditProfile> {
 
   Future<void> _handleEditProfile() async {
     if (!formKey.currentState!.validate()) return;
-
-    if (!isDataChanged()) {
-      Navigator.of(context).pop();
-      return;
-    }
-
     final email = emailController.text.trim();
 
     UserModel updatedUser = UserModel(

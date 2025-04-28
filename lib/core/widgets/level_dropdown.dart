@@ -5,7 +5,7 @@ class LevelDropDown extends StatefulWidget {
       {super.key, required this.onSelected, required this.initialLevel});
 
   final void Function(int?) onSelected;
-  final int? initialLevel; 
+  final int? initialLevel;
 
   @override
   State<LevelDropDown> createState() => _LevelDropDownState();

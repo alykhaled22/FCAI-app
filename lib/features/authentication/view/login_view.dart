@@ -94,16 +94,10 @@ class _LoginViewState extends State<LoginView> {
     } else {
       if (!mounted) return;
       Helpers.showSuccessSnackBar(context, "Login successful!");
-      saveLoginState();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AppNavigation()),
       );
     }
-  }
-
-  Future<void> saveLoginState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', true);
   }
 }

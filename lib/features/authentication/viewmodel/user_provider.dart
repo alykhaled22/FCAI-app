@@ -2,6 +2,7 @@ import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider extends ChangeNotifier {
   final HiveService hiveService = HiveService<UserModel>();
@@ -18,6 +19,10 @@ class UserProvider extends ChangeNotifier {
     if (user == null || user.password != password) {
       return false;
     }
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+    await prefs.setString('loggedInUserEmail', email);
     currentUser = user;
     return true;
   }
@@ -54,17 +59,45 @@ class UserProvider extends ChangeNotifier {
     }
 
     currentUser = user;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('loggedInUserEmail', updatedEmail);
 
     await hiveService.putData(box: box, key: user.email, value: user);
     notifyListeners();
   }
 
-  void logoutUser() {
+  void logoutUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    await prefs.remove('loggedInUserEmail');
+
     currentUser = UserModel(
       name: "",
       id: "",
       email: "",
       password: "",
     );
+  }
+
+  Future<bool> checkLoginState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLoggedIn') ?? false;
+  }
+
+  Future<void> loadCurrentUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('loggedInUserEmail');
+
+    if (email != null) {
+      final boxName = "user";
+      final box = !hiveService.isBoxOpen(boxName: boxName)
+          ? await hiveService.openBox(boxName: boxName)
+          : Hive.box<UserModel>(boxName);
+
+      final user = hiveService.getData(box: box, key: email);
+      if (user != null) {
+        currentUser = user;
+      }
+    }
   }
 }
