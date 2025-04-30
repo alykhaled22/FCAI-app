@@ -38,12 +38,12 @@ class _ChangePasswordState extends State<ChangePassword> {
         body: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20),
             child: Form(
               key: formKey,
               child: Column(
                 children: [
-                  Image.asset('assets/images/ChangePassword.png'),
+                  Image.asset('assets/images/change_password.png'),
                   SizedBox(height: 20),
                   AuthLabel(label: "Change Password", fontSize: 24),
                   SizedBox(height: 20),

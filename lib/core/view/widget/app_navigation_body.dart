@@ -6,8 +6,16 @@ import 'package:fcai_app/features/user_profile/view/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AppNavigationBody extends StatelessWidget {
-  const AppNavigationBody({super.key});
+class AppNavigationBody extends StatefulWidget {
+  final int initialPage;
+  const AppNavigationBody({super.key, this.initialPage = 0});
+
+  @override
+  State<AppNavigationBody> createState() => _AppNavigationBodyState();
+}
+
+class _AppNavigationBodyState extends State<AppNavigationBody> {
+  late PageController _pageController;
 
   final List<Widget> screens = const [
     StoresView(),
@@ -16,12 +24,37 @@ class AppNavigationBody extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    _pageController = PageController(initialPage: widget.initialPage);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<NavigationProvider>(context, listen: false)
+          .updateIndex(widget.initialPage);
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final provider = Provider.of<NavigationProvider>(context);
+    provider.pageController = _pageController;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: screens[provider.currentIndex],
+        body: PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          onPageChanged: (index) {
+            provider.updateIndex(index);
+          },
+          children: screens,
+        ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(
               bottom: 12.0, left: 16.0, right: 16.0, top: 8.0),
@@ -36,6 +69,11 @@ class AppNavigationBody extends StatelessWidget {
                 currentIndex: provider.currentIndex,
                 onTap: (index) {
                   provider.changeTab(index);
+                  _pageController.animateToPage(
+                    index,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
                 },
                 selectedItemColor: AppColors.primaryColor,
                 backgroundColor: AppColors.secondaryColor,

@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AppNavigation extends StatelessWidget {
-  const AppNavigation({super.key});
+  const AppNavigation({super.key,  this.initialPage = 0});
+  final int initialPage ;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class AppNavigation extends StatelessWidget {
           create: (_) => StoresProvider()..init(context),
         ),
       ],
-      child: AppNavigationBody(),
+      child: AppNavigationBody(initialPage: initialPage,),
     );
   }
 }

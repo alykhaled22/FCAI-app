@@ -1,3 +1,4 @@
+import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class LevelDropDown extends StatefulWidget {
@@ -18,7 +19,7 @@ class _LevelDropDownState extends State<LevelDropDown> {
   @override
   void initState() {
     super.initState();
-    selectedValue = widget.initialLevel; // Initialize with provided level
+    selectedValue = widget.initialLevel; 
   }
 
   @override
@@ -39,20 +40,20 @@ class _LevelDropDownState extends State<LevelDropDown> {
         fontWeight: FontWeight.w500,
       ),
       menuStyle: MenuStyle(
-        backgroundColor: WidgetStateProperty.all(Colors.white),
+        backgroundColor: WidgetStateProperty.all(AppColors.secondaryColor),
         surfaceTintColor: WidgetStateProperty.all(Colors.transparent),
         elevation: WidgetStateProperty.all(4),
         shape: WidgetStateProperty.all(RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         )),
       ),
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width - 80,
       initialSelection: selectedValue,
       onSelected: (value) {
         setState(() {
           selectedValue = value;
         });
-        widget.onSelected(value); // Notify parent of change
+        widget.onSelected(value); 
       },
       dropdownMenuEntries: levels.map((int level) {
         return DropdownMenuEntry<int>(

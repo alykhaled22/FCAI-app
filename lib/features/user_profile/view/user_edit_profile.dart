@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
+import 'package:fcai_app/core/view/app_navigation.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/core/widgets/gender_radio.dart';
 import 'package:fcai_app/core/widgets/level_dropdown.dart';
@@ -57,13 +58,23 @@ class _UserEditProfileState extends State<UserEditProfile> {
       canPop: false,
       onPopInvokedWithResult: (didpop, result) async {
         if (!isDataChanged()) {
-          Navigator.of(context).pop();
+          Helpers.navigateReplacmentWithSlide(
+            context,
+            AppNavigation(
+              initialPage: 2,
+            ),
+          );
           return;
         }
         final confirm = await didPop();
         if (confirm) {
           if (!context.mounted) return;
-          Navigator.of(context).pop();
+          Helpers.navigateReplacmentWithSlide(
+            context,
+            AppNavigation(
+              initialPage: 2,
+            ),
+          );
         }
       },
       child: SafeArea(
@@ -143,13 +154,24 @@ class _UserEditProfileState extends State<UserEditProfile> {
                       label: "Cancel",
                       onPressed: () async {
                         if (!isDataChanged()) {
-                          Navigator.of(context).pop();
+                          Helpers.navigateReplacmentWithSlide(
+                            context,
+                            AppNavigation(
+                              initialPage: 2,
+                            ),
+                          );
                           return;
                         }
                         final confirm = await didPop();
                         if (confirm) {
                           if (!context.mounted) return;
-                          Navigator.of(context).pop();
+                          Helpers.navigateReplacmentWithSlide(
+                            context,
+                            AppNavigation(
+                              initialPage: 2,
+                            ),
+                          );
+                          return;
                         }
                       },
                       buttonColor: Colors.white,
@@ -202,7 +224,12 @@ class _UserEditProfileState extends State<UserEditProfile> {
     if (!mounted) return;
 
     Helpers.showSuccessSnackBar(context, "Edited successfully!");
-    Navigator.pop(context);
+    Helpers.navigateReplacmentWithSlide(
+      context,
+      AppNavigation(
+        initialPage: 2,
+      ),
+    );
   }
 
   Future<void> pickImage(ImageSource source) async {

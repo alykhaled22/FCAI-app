@@ -12,7 +12,6 @@ import 'package:fcai_app/features/authentication/view/widgets/swap_auth.dart';
 import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -40,7 +39,10 @@ class _LoginViewState extends State<LoginView> {
               key: formKey,
               child: Column(
                 children: [
-                  Image.asset('assets/images/login3.jpg'),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Image.asset('assets/images/login.png'),
                   SizedBox(height: 40),
                   AuthLabel(label: "Login", fontSize: 28),
                   SizedBox(height: 20),
@@ -66,10 +68,7 @@ class _LoginViewState extends State<LoginView> {
                       label: "Don't have an account?",
                       action: "Sign up Now!",
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignUpView()));
+                        Helpers.navigateWithSlide(context, SignUpView());
                       })
                 ],
               ),
@@ -94,10 +93,7 @@ class _LoginViewState extends State<LoginView> {
     } else {
       if (!mounted) return;
       Helpers.showSuccessSnackBar(context, "Login successful!");
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => AppNavigation()),
-      );
+      Helpers.navigateWithFadeAndScale(context, AppNavigation());
     }
   }
 }

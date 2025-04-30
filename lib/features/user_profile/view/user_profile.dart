@@ -44,12 +44,8 @@ class UserProfile extends StatelessWidget {
               ),
               label: "Edit Profile",
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserEditProfile(),
-                  ),
-                );
+                Helpers.navigateReplacmentWithSlide(context, UserEditProfile(),
+                    backward: false);
               },
               buttonColor: AppColors.primaryColor,
             ),
@@ -61,12 +57,7 @@ class UserProfile extends StatelessWidget {
               ),
               label: "Change password",
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChangePassword(),
-                  ),
-                );
+                Helpers.navigateWithSlide(context, ChangePassword());
               },
               buttonColor: Colors.white,
               textColor: Colors.black,
@@ -92,11 +83,7 @@ class UserProfile extends StatelessWidget {
                   if (!context.mounted) return;
                   Provider.of<UserProvider>(context, listen: false)
                       .logoutUser();
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginView(),
-                      ));
+                  Helpers.navigateSlideFromBottom(context, LoginView());
                 }
               },
               buttonColor: Colors.white,
