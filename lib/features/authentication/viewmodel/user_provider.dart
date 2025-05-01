@@ -17,18 +17,14 @@ class UserProvider extends ChangeNotifier {
 
     isLoading = true;
     notifyListeners();
-    try {
-      final user = await firebaseService.signInWithEmailAndPassword(
-          email, password, context);
-      if (user == null) return false;
-    } catch (e) {
-      if (!context.mounted) return false;
-      Helpers.showErrorSnackBar(
-          context, "An error occurred. Please try again.");
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
+
+    final user = await firebaseService.signInWithEmailAndPassword(
+        email, password, context);
+
+    isLoading = false;
+    notifyListeners();
+
+    if (user == null) return false;
 
     if (!context.mounted) return false;
     Helpers.showSuccessSnackBar(context, "Logged in scuccessfully!");
@@ -41,16 +37,14 @@ class UserProvider extends ChangeNotifier {
 
     isLoading = true;
     notifyListeners();
-    try {
-      await firebaseService.signUpWithEmailAndPassword(user, context);
-    } catch (e) {
-      if (!context.mounted) return false;
-      Helpers.showErrorSnackBar(
-          context, "An error occurred. Please try again.");
+
+    final regUser =
+        await firebaseService.signUpWithEmailAndPassword(user, context);
+    isLoading = false;
+    notifyListeners();
+
+    if (regUser == null) {
       return false;
-    } finally {
-      isLoading = false;
-      notifyListeners();
     }
 
     if (!context.mounted) return false;
@@ -64,7 +58,9 @@ class UserProvider extends ChangeNotifier {
 
     isLoading = true;
     notifyListeners();
+
     final success = await firebaseService.updateUserData(user, context);
+
     isLoading = false;
     notifyListeners();
 
@@ -85,8 +81,10 @@ class UserProvider extends ChangeNotifier {
 
     isLoading = true;
     notifyListeners();
+
     final success = await firebaseService.updateUserPassword(
         newPassword, oldPassword, context);
+        
     isLoading = false;
     notifyListeners();
     return success;
@@ -97,7 +95,8 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> loadCurrentUser(BuildContext context) async {
-    final connection = await firebaseService.checkInternetConnection(context,showMsg: false);
+    final connection =
+        await firebaseService.checkInternetConnection(context, showMsg: false);
     if (!connection) {
       currentUser = await firebaseService.loadCachedUser();
     } else {
