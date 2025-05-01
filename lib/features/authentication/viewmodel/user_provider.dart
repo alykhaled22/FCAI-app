@@ -78,13 +78,15 @@ class UserProvider extends ChangeNotifier {
     return success;
   }
 
-  Future<bool> updateUserPass(String password, BuildContext context) async {
+  Future<bool> updateUserPass(
+      String newPassword, String oldPassword, BuildContext context) async {
     final connection = await firebaseService.checkInternetConnection(context);
     if (!connection || !context.mounted) return false;
 
     isLoading = true;
     notifyListeners();
-    final success = await firebaseService.updateUserPassword(password, context);
+    final success = await firebaseService.updateUserPassword(
+        newPassword, oldPassword, context);
     isLoading = false;
     notifyListeners();
     return success;

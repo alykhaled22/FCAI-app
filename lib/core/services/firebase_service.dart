@@ -41,7 +41,6 @@ class FirebaseService {
           email: email, password: password);
       return currentUser.user;
     } on FirebaseAuthException catch (e) {
-      print(e.code);
       final message = handleFirebaseAuthError(e);
       if (!context.mounted) return null;
       Helpers.showErrorSnackBar(context, message);
@@ -91,18 +90,30 @@ class FirebaseService {
     }
   }
 
-  Future<bool> updateUserPassword(String password, BuildContext context) async {
+  Future<bool> updateUserPassword(
+      String newPassword, String oldPassword, BuildContext context) async {
     try {
       final user = userAuth.currentUser;
       if (user == null) return false;
-
-      await user.updatePassword(password);
+      await user.reauthenticateWithCredential(
+        EmailAuthProvider.credential(
+          email: user.email!,
+          password: oldPassword,
+        ),
+      );
+      await user.updatePassword(newPassword);
       return true;
     } on FirebaseAuthException catch (e) {
-      final message = handleFirebaseAuthError(e);
-      if (!context.mounted) return false;
-      Helpers.showErrorSnackBar(context, message);
-      return false;
+      if (e.code == 'invalid-credential') {
+        if (!context.mounted) return false;
+        Helpers.showErrorSnackBar(context, "Wrong password, Please try again.");
+        return false;
+      } else {
+        final message = handleFirebaseAuthError(e);
+        if (!context.mounted) return false;
+        Helpers.showErrorSnackBar(context, message);
+        return false;
+      }
     } catch (e) {
       if (!context.mounted) return false;
       Helpers.showErrorSnackBar(

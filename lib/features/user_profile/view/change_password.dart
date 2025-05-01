@@ -16,7 +16,8 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -32,7 +33,8 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   void dispose() {
     super.dispose();
-    passwordController.dispose();
+    oldPasswordController.dispose();
+    newPasswordController.dispose();
     confirmPasswordController.dispose();
   }
 
@@ -55,15 +57,21 @@ class _ChangePasswordState extends State<ChangePassword> {
                   AuthLabel(label: "Change Password", fontSize: 24),
                   SizedBox(height: 20),
                   PasswordTextField(
+                    validator: Validators.validateRequiredField,
+                    label: "Old password",
+                    controller: oldPasswordController,
+                  ),
+                  SizedBox(height: 20),
+                  PasswordTextField(
                     validator: Validators.validatePassword,
                     label: "New password",
-                    controller: passwordController,
+                    controller: newPasswordController,
                   ),
                   SizedBox(height: 20),
                   PasswordTextField(
                     validator: (value) => Validators.validateConfirmPassword(
                       value,
-                      passwordController.text,
+                      newPasswordController.text,
                     ),
                     label: "Confirm new password",
                     controller: confirmPasswordController,
@@ -97,8 +105,8 @@ class _ChangePasswordState extends State<ChangePassword> {
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    final success =
-        await userProvider.updateUserPass(passwordController.text, context);
+    final success = await userProvider.updateUserPass(
+        newPasswordController.text, oldPasswordController.text, context);
 
     if (!success || !mounted) {
       return;
