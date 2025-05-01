@@ -1,103 +1,117 @@
 import 'package:fcai_app/core/models/user_model.dart';
+import 'package:fcai_app/core/services/firebase_service.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
+import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider extends ChangeNotifier {
   final HiveService hiveService = HiveService<UserModel>();
   late UserModel currentUser;
+  final FirebaseService firebaseService = FirebaseService();
+  bool isLoading = false;
 
-  Future<bool> loginUser(String email, String password) async {
-    final boxName = "user";
-    final box = !hiveService.isBoxOpen(boxName: boxName)
-        ? await hiveService.openBox(boxName: boxName)
-        : Hive.box<UserModel>(boxName);
+  Future<bool> loginUser(
+      String email, String password, BuildContext context) async {
+    final connection = await firebaseService.checkInternetConnection(context);
+    if (!connection || !context.mounted) return false;
 
-    final user = hiveService.getData(box: box, key: email);
-
-    if (user == null || user.password != password) {
-      return false;
+    isLoading = true;
+    notifyListeners();
+    try {
+      final user = await firebaseService.signInWithEmailAndPassword(
+          email, password, context);
+      if (user == null) return false;
+    } catch (e) {
+      if (!context.mounted) return false;
+      Helpers.showErrorSnackBar(
+          context, "An error occurred. Please try again.");
+    } finally {
+      isLoading = false;
+      notifyListeners();
     }
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', true);
-    await prefs.setString('loggedInUserEmail', email);
-    currentUser = user;
+    if (!context.mounted) return false;
+    Helpers.showSuccessSnackBar(context, "Logged in scuccessfully!");
     return true;
   }
 
-  Future<bool> isUserExists(String email) async {
-    final boxName = "user";
-    final box = !hiveService.isBoxOpen(boxName: boxName)
-        ? await hiveService.openBox(boxName: boxName)
-        : Hive.box<UserModel>(boxName);
-    if (box.containsKey(email)) {
-      return true;
-    } else {
+  Future<bool> registerUser(UserModel user, BuildContext context) async {
+    final connection = await firebaseService.checkInternetConnection(context);
+    if (!connection || !context.mounted) return false;
+
+    isLoading = true;
+    notifyListeners();
+    try {
+      await firebaseService.signUpWithEmailAndPassword(user, context);
+    } catch (e) {
+      if (!context.mounted) return false;
+      Helpers.showErrorSnackBar(
+          context, "An error occurred. Please try again.");
+      return false;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+
+    if (!context.mounted) return false;
+    Helpers.showSuccessSnackBar(context, "Signed up scuccessfully!");
+    return true;
+  }
+
+  Future<bool> updateUser(UserModel user, BuildContext context) async {
+    final connection = await firebaseService.checkInternetConnection(context);
+    if (!connection || !context.mounted) return false;
+
+    isLoading = true;
+    notifyListeners();
+    final success = await firebaseService.updateUserData(user, context);
+    isLoading = false;
+    notifyListeners();
+
+    if (!success) {
+      if (!context.mounted) return false;
+      Helpers.showErrorSnackBar(
+          context, "An error occurred. Please try again.");
       return false;
     }
+
+    return success;
   }
 
-  Future<void> registerUser(UserModel user, String email) async {
-    final boxName = "user";
-    final box = !hiveService.isBoxOpen(boxName: boxName)
-        ? await hiveService.openBox(boxName: boxName)
-        : Hive.box<UserModel>(boxName);
-    await hiveService.putData(box: box, key: user.email, value: user);
-  }
+  Future<bool> updateUserPass(String password, BuildContext context) async {
+    final connection = await firebaseService.checkInternetConnection(context);
+    if (!connection || !context.mounted) return false;
 
-  Future<void> updateUser(
-      UserModel user, String updatedEmail, String oldEmail) async {
-    final boxName = "user";
-    final box = !hiveService.isBoxOpen(boxName: boxName)
-        ? await hiveService.openBox(boxName: boxName)
-        : Hive.box<UserModel>(boxName);
-
-    if (updatedEmail != oldEmail) {
-      await hiveService.deleteData(box: box, key: oldEmail);
-    }
-
-    currentUser = user;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('loggedInUserEmail', updatedEmail);
-
-    await hiveService.putData(box: box, key: user.email, value: user);
+    isLoading = true;
     notifyListeners();
+    final success = await firebaseService.updateUserPassword(password, context);
+    isLoading = false;
+    notifyListeners();
+    return success;
+  }
+
+  bool checkLoginState() {
+    return firebaseService.isUserLoggedIn();
+  }
+
+  Future<void> loadCurrentUser(BuildContext context) async {
+    final connection = await firebaseService.checkInternetConnection(context);
+    if (!connection || !context.mounted) return;
+
+    final userModel = await firebaseService.getCurrentUser(context);
+    if (userModel != null) {
+      currentUser = userModel;
+      notifyListeners();
+    }
   }
 
   void logoutUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
-    await prefs.remove('loggedInUserEmail');
-
+    await firebaseService.logoutUser();
     currentUser = UserModel(
       name: "",
       id: "",
       email: "",
       password: "",
     );
-  }
-
-  Future<bool> checkLoginState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('isLoggedIn') ?? false;
-  }
-
-  Future<void> loadCurrentUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final email = prefs.getString('loggedInUserEmail');
-
-    if (email != null) {
-      final boxName = "user";
-      final box = !hiveService.isBoxOpen(boxName: boxName)
-          ? await hiveService.openBox(boxName: boxName)
-          : Hive.box<UserModel>(boxName);
-
-      final user = hiveService.getData(box: box, key: email);
-      if (user != null) {
-        currentUser = user;
-      }
-    }
   }
 }

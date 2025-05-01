@@ -1,5 +1,6 @@
 import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/viewmodel/navigation_provider.dart';
+import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
 import 'package:fcai_app/features/stores/view/fav_stores_view.dart';
 import 'package:fcai_app/features/stores/view/stores_view.dart';
 import 'package:fcai_app/features/user_profile/view/user_profile.dart';
@@ -31,6 +32,8 @@ class _AppNavigationBodyState extends State<AppNavigationBody> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<NavigationProvider>(context, listen: false)
           .updateIndex(widget.initialPage);
+      Provider.of<UserProvider>(context, listen: false)
+          .loadCurrentUser(context);
     });
   }
 

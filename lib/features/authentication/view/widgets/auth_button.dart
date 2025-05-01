@@ -1,4 +1,5 @@
 import 'package:fcai_app/core/utils/app_colors.dart';
+import 'package:fcai_app/features/authentication/view/widgets/loading_holder.dart';
 import 'package:flutter/material.dart';
 
 class AuthButton extends StatelessWidget {
@@ -8,12 +9,14 @@ class AuthButton extends StatelessWidget {
     required this.onPressed,
     this.buttonColor = AppColors.primaryColor,
     this.buttonTextColor = Colors.white,
+    this.isLoading = false,
   });
 
   final String label;
   final VoidCallback onPressed;
   final Color? buttonColor;
   final Color? buttonTextColor;
+  final bool isLoading;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -26,14 +29,16 @@ class AuthButton extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 14),
           backgroundColor: buttonColor,
         ),
-        onPressed: onPressed,
-        child: Text(
-          label,
-          style: TextStyle(
-              color: buttonTextColor,
-              fontSize: 18,
-              fontWeight: FontWeight.bold),
-        ),
+        onPressed: isLoading ? () {} : onPressed,
+        child: isLoading
+            ? LoadingHolder()
+            : Text(
+                label,
+                style: TextStyle(
+                    color: buttonTextColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
       ),
     );
   }

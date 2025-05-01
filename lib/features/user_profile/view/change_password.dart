@@ -16,7 +16,6 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
@@ -31,7 +30,15 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool isLoading = Provider.of<UserProvider>(context).isLoading;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -46,15 +53,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                   Image.asset('assets/images/change_password.png'),
                   SizedBox(height: 20),
                   AuthLabel(label: "Change Password", fontSize: 24),
-                  SizedBox(height: 20),
-                  PasswordTextField(
-                    label: "Old password",
-                    controller: oldPasswordController,
-                    validator: (value) => Validators.validateOldPassword(
-                      value,
-                      oldPassword: currentUser.password,
-                    ),
-                  ),
                   SizedBox(height: 20),
                   PasswordTextField(
                     validator: Validators.validatePassword,
@@ -72,6 +70,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                   SizedBox(height: 40),
                   AuthButton(
+                    isLoading: isLoading,
                     label: "Save password",
                     onPressed: () async => await _handleChangePass(),
                   ),
@@ -96,25 +95,14 @@ class _ChangePasswordState extends State<ChangePassword> {
   Future<void> _handleChangePass() async {
     if (!formKey.currentState!.validate()) return;
 
-    UserModel updatedUser = UserModel(
-      name: currentUser.name,
-      id: currentUser.id,
-      email: currentUser.email,
-      password: passwordController.text,
-      gender: currentUser.gender,
-      level: currentUser.level,
-      imageUrl: currentUser.imageUrl,
-    );
-
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    await userProvider.updateUser(
-      updatedUser,
-      currentUser.email,
-      currentUser.email,
-    );
+    final success =
+        await userProvider.updateUserPass(passwordController.text, context);
 
-    if (!mounted) return;
+    if (!success || !mounted) {
+      return;
+    }
 
     Helpers.showSuccessSnackBar(context, "Password changed scuccessfully!");
     Navigator.pop(context);

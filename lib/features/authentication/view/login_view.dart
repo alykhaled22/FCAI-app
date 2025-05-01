@@ -27,7 +27,15 @@ class _LoginViewState extends State<LoginView> {
   final HiveService hiveService = HiveService<UserModel>();
 
   @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool isLoading = Provider.of<UserProvider>(context).isLoading;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -60,6 +68,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   SizedBox(height: 40),
                   AuthButton(
+                    isLoading: isLoading,
                     label: "Login",
                     onPressed: () async => await _handleLogin(),
                   ),
@@ -82,17 +91,14 @@ class _LoginViewState extends State<LoginView> {
   Future<void> _handleLogin() async {
     if (!formKey.currentState!.validate()) return;
     final email = emailController.text.trim();
-    final password = passwordController.text;
+    final password = passwordController.text.trim();
 
     final authProvider = Provider.of<UserProvider>(context, listen: false);
-    final success = await authProvider.loginUser(email, password);
+    final success = await authProvider.loginUser(email, password, context);
 
-    if (!success) {
+    if (success) {
       if (!mounted) return;
-      Helpers.showErrorSnackBar(context, "Invalid email or password");
-    } else {
-      if (!mounted) return;
-      Helpers.showSuccessSnackBar(context, "Login successful!");
+      authProvider.loadCurrentUser(context);
       Helpers.navigateWithFadeAndScale(context, AppNavigation());
     }
   }

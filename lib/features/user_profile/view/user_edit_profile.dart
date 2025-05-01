@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
-import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/view/app_navigation.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
 import 'package:fcai_app/core/widgets/gender_radio.dart';
@@ -41,6 +40,14 @@ class _UserEditProfileState extends State<UserEditProfile> {
     _initialize();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    idController.dispose();
+    emailController.dispose();
+  }
+
   void _initialize() {
     nameController.text = currentUser.name;
     idController.text = currentUser.id;
@@ -54,6 +61,8 @@ class _UserEditProfileState extends State<UserEditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLoading = Provider.of<UserProvider>(context).isLoading;
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didpop, result) async {
@@ -106,22 +115,16 @@ class _UserEditProfileState extends State<UserEditProfile> {
                       label: "Student ID",
                       icon: Icons.confirmation_number,
                       controller: idController,
-                      validator: (value) => Validators.validateUpdatedStudentId(
-                        value,
-                        currentEmail: emailController.text,
-                        originalEmail: currentUser.email,
-                      ),
+                      validator: null,
+                      readOnly: true,
                     ),
                     SizedBox(height: 20),
                     CustomTextField(
                       label: "Email",
                       icon: Icons.email,
                       controller: emailController,
-                      validator: (value) => Validators.validateUpdatedFcaiEmail(
-                        value,
-                        currentID: idController.text,
-                        originalID: currentUser.id,
-                      ),
+                      validator: null,
+                      readOnly: true,
                     ),
                     SizedBox(height: 20),
                     GenderRadio(
@@ -146,6 +149,7 @@ class _UserEditProfileState extends State<UserEditProfile> {
                     ),
                     SizedBox(height: 35),
                     AuthButton(
+                      isLoading: isLoading,
                       label: "Save Changes",
                       onPressed: () async => await _handleEditProfile(),
                     ),
@@ -189,14 +193,13 @@ class _UserEditProfileState extends State<UserEditProfile> {
 
   Future<void> _handleEditProfile() async {
     if (!formKey.currentState!.validate()) return;
-    final email = emailController.text.trim();
 
     UserModel updatedUser = UserModel(
       name: nameController.text.isNotEmpty
           ? nameController.text
           : currentUser.name,
-      id: idController.text.isNotEmpty ? idController.text : currentUser.id,
-      email: email.isNotEmpty ? email : currentUser.email,
+      id: idController.text,
+      email: emailController.text,
       password: currentUser.password,
       gender: selectedGender ?? currentUser.gender,
       level: selectedLevel?.toString() ?? currentUser.level,
@@ -205,24 +208,11 @@ class _UserEditProfileState extends State<UserEditProfile> {
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    if (emailController.text != currentUser.email) {
-      final success = await userProvider.isUserExists(email);
-      if (success) {
-        if (!mounted) return;
-        Helpers.showErrorSnackBar(
-            context, "User with the same Email already exists!");
-        return;
-      }
-    }
+    final success = await userProvider.updateUser(updatedUser, context);
 
-    await userProvider.updateUser(
-      updatedUser,
-      emailController.text,
-      currentUser.email,
-    );
+    if (!success) return;
 
     if (!mounted) return;
-
     Helpers.showSuccessSnackBar(context, "Edited successfully!");
     Helpers.navigateReplacmentWithSlide(
       context,

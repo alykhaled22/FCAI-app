@@ -1,0 +1,2 @@
+D:/My-GitHub/FCAI-app/android/app/.cxx/RelWithDebInfo/4i692h3c/x86/CMakeFiles/edit_cache.dir
+D:/My-GitHub/FCAI-app/android/app/.cxx/RelWithDebInfo/4i692h3c/x86/CMakeFiles/rebuild_cache.dir

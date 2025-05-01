@@ -1,6 +1,5 @@
 import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
-import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/core/utils/validators.dart';
 import 'package:fcai_app/core/widgets/auth_label.dart';
 import 'package:fcai_app/core/widgets/custom_text_field.dart';
@@ -35,7 +34,19 @@ class _SignUpViewState extends State<SignUpView> {
   final HiveService hiveService = HiveService<UserModel>();
 
   @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    idController.dispose();
+    confirmPasswordController.dispose();
+    nameController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool isLoading = Provider.of<UserProvider>(context).isLoading;
+
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
@@ -106,6 +117,7 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 SizedBox(height: 40),
                 AuthButton(
+                  isLoading: isLoading,
                   label: "Sign up",
                   onPressed: () async => await _handleSignUp(),
                 ),
@@ -131,32 +143,22 @@ class _SignUpViewState extends State<SignUpView> {
     if (!formKey.currentState!.validate()) return;
 
     final email = emailController.text.trim();
+    final password = passwordController.text.trim();
 
-    if (!mounted) return;
+    UserModel userModel = UserModel(
+      email: email,
+      name: nameController.text.trim(),
+      id: idController.text.trim(),
+      level: selectedLevel,
+      password: password,
+      gender: selectedGender,
+      imageUrl: "",
+    );
 
     final authProvider = Provider.of<UserProvider>(context, listen: false);
-    final success = await authProvider.isUserExists(email);
-
-    if (success) {
-      if (!mounted) return;
-      Helpers.showErrorSnackBar(
-          context, "User with the same Email already exists!");
-      return;
-    } else {
-      UserModel user = UserModel(
-        id: idController.text,
-        name: nameController.text,
-        email: email,
-        password: passwordController.text,
-        gender: selectedGender,
-        level: selectedLevel,
-      );
-      await authProvider.registerUser(user, email);
-    }
+    final success = await authProvider.registerUser(userModel, context);
 
     if (!mounted) return;
-
-    Helpers.showSuccessSnackBar(context, "Signed up scuccessfully!");
-    Navigator.pop(context);
+    if (success) Navigator.pop(context);
   }
 }

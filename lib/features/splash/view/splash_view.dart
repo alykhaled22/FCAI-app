@@ -18,12 +18,14 @@ class _SplashViewState extends State<SplashView> {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () async {
       if (!mounted) return;
-      bool isLoggedIn = await Provider.of<UserProvider>(context, listen: false)
-          .checkLoginState();
+      bool isLoggedIn =
+          Provider.of<UserProvider>(context, listen: false).checkLoginState();
 
       if (isLoggedIn) {
         if (!mounted) return;
-        Provider.of<UserProvider>(context, listen: false).loadCurrentUser();
+        await Provider.of<UserProvider>(context, listen: false)
+            .loadCurrentUser(context);
+        if (!mounted) return;
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const AppNavigation()));
       } else {
