@@ -97,13 +97,16 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> loadCurrentUser(BuildContext context) async {
-    final connection = await firebaseService.checkInternetConnection(context);
-    if (!connection || !context.mounted) return;
-
-    final userModel = await firebaseService.getCurrentUser(context);
-    if (userModel != null) {
-      currentUser = userModel;
-      notifyListeners();
+    final connection = await firebaseService.checkInternetConnection(context,showMsg: false);
+    if (!connection) {
+      currentUser = await firebaseService.loadCachedUser();
+    } else {
+      if (!context.mounted) return;
+      final userModel = await firebaseService.getCurrentUser(context);
+      if (userModel != null) {
+        currentUser = userModel;
+        notifyListeners();
+      }
     }
   }
 

@@ -19,6 +19,15 @@ class UserModel {
   @HiveField(6)
   final String? imageUrl;
 
+  UserModel.empty()
+      : id = "",
+        name = "",
+        email = "",
+        password = "",
+        gender = null,
+        level = null,
+        imageUrl = null;
+
   UserModel({
     required this.id,
     required this.name,

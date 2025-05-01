@@ -3,6 +3,7 @@ import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class FirebaseService {
@@ -48,6 +49,15 @@ class FirebaseService {
     return null;
   }
 
+  Future<void> chaceUesrData(UserModel user) async {
+    if (!Hive.isBoxOpen("user")) {
+      await Hive.openBox<UserModel>("user");
+    }
+    final box = Hive.box<UserModel>("user");
+    await box.clear();
+    await box.add(user);
+  }
+
   Future<UserModel?> getCurrentUser(BuildContext context) async {
     final user = FirebaseAuth.instance.currentUser;
 
@@ -60,7 +70,7 @@ class FirebaseService {
     if (!doc.exists) return null;
 
     final data = doc.data()!;
-    return UserModel(
+    final userModel = UserModel(
       name: data['name'] ?? "",
       id: data['id'] ?? "",
       email: data['email'] ?? "",
@@ -69,6 +79,17 @@ class FirebaseService {
       level: data['level'] ?? "",
       imageUrl: data['imageUrl'] ?? "",
     );
+    await chaceUesrData(userModel);
+    return userModel;
+  }
+
+  Future<UserModel> loadCachedUser() async {
+    if (!Hive.isBoxOpen("user")) {
+      await Hive.openBox<UserModel>("user");
+    }
+    final box = Hive.box<UserModel>("user");
+    if (box.isEmpty) return UserModel.empty();
+    return box.getAt(0)!;
   }
 
   Future<bool> updateUserData(UserModel user, BuildContext context) async {
@@ -84,6 +105,7 @@ class FirebaseService {
         "level": user.level,
         "gender": user.gender,
       });
+      chaceUesrData(user);
       return true;
     } catch (e) {
       return false;
@@ -95,12 +117,15 @@ class FirebaseService {
     try {
       final user = userAuth.currentUser;
       if (user == null) return false;
+
+      // Reauthenticate the user
       await user.reauthenticateWithCredential(
         EmailAuthProvider.credential(
           email: user.email!,
           password: oldPassword,
         ),
       );
+
       await user.updatePassword(newPassword);
       return true;
     } on FirebaseAuthException catch (e) {
@@ -130,13 +155,16 @@ class FirebaseService {
     await userAuth.signOut();
   }
 
-  Future<bool> checkInternetConnection(BuildContext context) async {
+  Future<bool> checkInternetConnection(BuildContext context,
+      {bool showMsg = true}) async {
     final bool isConnected =
         await InternetConnectionChecker.instance.hasConnection;
     if (!isConnected) {
       if (!context.mounted) return false;
-      Helpers.showErrorSnackBar(
-          context, "Please check your internet connection.");
+      if (showMsg) {
+        Helpers.showErrorSnackBar(
+            context, "Please check your internet connection.");
+      }
     }
     return isConnected;
   }

@@ -29,4 +29,6 @@ class HiveService<T> {
   Future<void> deleteData({required Box<T> box, required String key}) async {
     await box.delete(key);
   }
+
+  
 }
