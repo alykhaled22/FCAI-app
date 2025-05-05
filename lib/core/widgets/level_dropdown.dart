@@ -47,7 +47,7 @@ class _LevelDropDownState extends State<LevelDropDown> {
           borderRadius: BorderRadius.circular(10),
         )),
       ),
-      width: MediaQuery.of(context).size.width - 80,
+      width: MediaQuery.of(context).size.width - 60,
       initialSelection: selectedValue,
       onSelected: (value) {
         setState(() {

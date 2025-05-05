@@ -2,6 +2,7 @@ import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/firebase_service.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
+import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
 import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -12,7 +13,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<bool> loginUser(
       String email, String password, BuildContext context) async {
-    final connection = await firebaseService.checkInternetConnection(context);
+    final connection = await Helpers.checkInternetConnection(context);
     if (!connection || !context.mounted) return false;
 
     isLoading = true;
@@ -32,7 +33,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<bool> registerUser(UserModel user, BuildContext context) async {
-    final connection = await firebaseService.checkInternetConnection(context);
+    final connection = await Helpers.checkInternetConnection(context);
     if (!connection || !context.mounted) return false;
 
     isLoading = true;
@@ -53,7 +54,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<bool> updateUser(UserModel user, BuildContext context) async {
-    final connection = await firebaseService.checkInternetConnection(context);
+    final connection = await Helpers.checkInternetConnection(context);
     if (!connection || !context.mounted) return false;
 
     isLoading = true;
@@ -76,7 +77,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<bool> updateUserPass(
       String newPassword, String oldPassword, BuildContext context) async {
-    final connection = await firebaseService.checkInternetConnection(context);
+    final connection = await Helpers.checkInternetConnection(context);
     if (!connection || !context.mounted) return false;
 
     isLoading = true;
@@ -84,7 +85,7 @@ class UserProvider extends ChangeNotifier {
 
     final success = await firebaseService.updateUserPassword(
         newPassword, oldPassword, context);
-        
+
     isLoading = false;
     notifyListeners();
     return success;
@@ -96,7 +97,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> loadCurrentUser(BuildContext context) async {
     final connection =
-        await firebaseService.checkInternetConnection(context, showMsg: false);
+        await Helpers.checkInternetConnection(context, showMsg: false);
     if (!connection) {
       currentUser = await firebaseService.loadCachedUser();
     } else {
@@ -111,11 +112,7 @@ class UserProvider extends ChangeNotifier {
 
   void logoutUser() async {
     await firebaseService.logoutUser();
-    currentUser = UserModel(
-      name: "",
-      id: "",
-      email: "",
-      password: "",
-    );
+    StoresProvider.deleteCahcedStores();
+    currentUser = UserModel.empty();
   }
 }

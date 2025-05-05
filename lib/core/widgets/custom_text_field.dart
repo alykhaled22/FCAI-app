@@ -21,7 +21,7 @@ class CustomTextField extends StatelessWidget {
       readOnly: readOnly,
       controller: controller,
       validator: validator,
-      keyboardType: label == "Email"
+      keyboardType: label == "FCAI Email"
           ? TextInputType.emailAddress
           : label == 'Student ID'
               ? TextInputType.number

@@ -57,7 +57,7 @@ class StoresProvider with ChangeNotifier {
       stores = box.values.toList();
     } catch (e) {
       debugPrint("Error fetching stores: $e");
-    } 
+    }
     isLoading = false;
     notifyListeners();
   }
@@ -75,5 +75,13 @@ class StoresProvider with ChangeNotifier {
       box.putAt(index, store);
       notifyListeners();
     }
+  }
+
+  static void deleteCahcedStores() async {
+    if (!Hive.isBoxOpen(boxName)) {
+      await Hive.openBox<StoreModel>(boxName);
+    }
+    final box = Hive.box<StoreModel>(boxName);
+    box.clear();
   }
 }

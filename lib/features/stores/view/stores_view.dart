@@ -1,3 +1,4 @@
+import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:fcai_app/features/stores/view/widgets/stores_list_view_builder.dart';
 import 'package:fcai_app/features/stores/view/widgets/stores_view_header.dart';
 import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
@@ -22,10 +23,12 @@ class StoresView extends StatelessWidget {
               onRefresh: () async {
                 return await Future.delayed(
                   Duration(seconds: 1),
-                  () {
+                  () async {
                     if (!context.mounted) return;
-                    Provider.of<StoresProvider>(context, listen: false)
+                    await Provider.of<StoresProvider>(context, listen: false)
                         .fetchAndCacheStores(context);
+                    if (!context.mounted) return;
+                    Helpers.checkInternetConnection(context);
                   },
                 );
               },

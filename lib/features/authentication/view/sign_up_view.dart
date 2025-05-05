@@ -53,7 +53,7 @@ class _SignUpViewState extends State<SignUpView> {
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
           child: Form(
             key: formKey,
             child: Column(

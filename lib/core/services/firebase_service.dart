@@ -4,7 +4,6 @@ import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class FirebaseService {
   final FirebaseAuth userAuth = FirebaseAuth.instance;
@@ -155,19 +154,7 @@ class FirebaseService {
     await userAuth.signOut();
   }
 
-  Future<bool> checkInternetConnection(BuildContext context,
-      {bool showMsg = true}) async {
-    final bool isConnected =
-        await InternetConnectionChecker.instance.hasConnection;
-    if (!isConnected) {
-      if (!context.mounted) return false;
-      if (showMsg) {
-        Helpers.showErrorSnackBar(
-            context, "Please check your internet connection.");
-      }
-    }
-    return isConnected;
-  }
+  
 
   String handleFirebaseAuthError(FirebaseAuthException e) {
     switch (e.code) {

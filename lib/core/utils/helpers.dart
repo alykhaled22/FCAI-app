@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+
 
 class Helpers {
   static String getCategoryImage(String category) {
@@ -235,5 +237,20 @@ class Helpers {
         transitionDuration: const Duration(milliseconds: 400),
       ),
     );
+  }
+
+
+  static Future<bool> checkInternetConnection(BuildContext context,
+      {bool showMsg = true}) async {
+    final bool isConnected =
+        await InternetConnectionChecker.instance.hasConnection;
+    if (!isConnected) {
+      if (!context.mounted) return false;
+      if (showMsg) {
+        Helpers.showErrorSnackBar(
+            context, "Please check your internet connection.");
+      }
+    }
+    return isConnected;
   }
 }

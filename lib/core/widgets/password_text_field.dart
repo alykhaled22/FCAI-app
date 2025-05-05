@@ -24,7 +24,6 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       controller: widget.controller,
       validator: widget.validator,
       obscureText: obscureText,
-      keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         suffixIcon: IconButton(
           onPressed: () {
