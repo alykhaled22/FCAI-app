@@ -1,12 +1,14 @@
 import 'package:fcai_app/core/models/user_model.dart';
-import 'package:fcai_app/features/stores/model/store_model.dart';
+import 'package:fcai_app/features/products/model/product_model.dart';
+import 'package:fcai_app/features/restaurants/model/restaurant_model.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class HiveService<T> {
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(UserModelAdapter());
-    Hive.registerAdapter(StoreModelAdapter());
+    Hive.registerAdapter(RestaurantsModelAdapter());
+    Hive.registerAdapter(ProductModelAdapter());
   }
 
   Future<Box<T>> openBox({required String boxName}) async {
@@ -29,6 +31,4 @@ class HiveService<T> {
   Future<void> deleteData({required Box<T> box, required String key}) async {
     await box.delete(key);
   }
-
-  
 }

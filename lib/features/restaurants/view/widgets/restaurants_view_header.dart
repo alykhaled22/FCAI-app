@@ -1,8 +1,8 @@
-import 'package:fcai_app/features/stores/view/widgets/search_bar.dart';
+import 'package:fcai_app/features/restaurants/view/widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 
-class StoresViewHeader extends StatelessWidget {
-  const StoresViewHeader({super.key, required this.title});
+class RestaurantsViewHeader extends StatelessWidget {
+  const RestaurantsViewHeader({super.key, required this.title});
   final String title;
 
   @override
@@ -22,7 +22,7 @@ class StoresViewHeader extends StatelessWidget {
           ),
         ),
         SizedBox(height: 15),
-        SearchStoresBar(),
+        CustomSearchBar(),
         SizedBox(height: 25),
       ],
     );

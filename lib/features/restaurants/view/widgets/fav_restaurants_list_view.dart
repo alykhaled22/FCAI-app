@@ -1,28 +1,29 @@
 import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/viewmodel/navigation_provider.dart';
-import 'package:fcai_app/features/stores/view/widgets/holder_view.dart';
-import 'package:fcai_app/features/stores/view/widgets/store_item.dart';
-import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
+import 'package:fcai_app/features/restaurants/view/widgets/holder_view.dart';
+import 'package:fcai_app/features/restaurants/view/widgets/restaurants_item.dart';
+import 'package:fcai_app/features/restaurants/viewmodel/resturants_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class FavStoresListView extends StatelessWidget {
-  const FavStoresListView({super.key});
+class FavRestaurantsListView extends StatelessWidget {
+  const FavRestaurantsListView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final favStores = Provider.of<StoresProvider>(context).favStores;
+    final favRestaurants =
+        Provider.of<RestaurantsProvider>(context).favRestaurants;
     final navProvider = Provider.of<NavigationProvider>(context);
 
-    if (favStores.isEmpty) {
+    if (favRestaurants.isEmpty) {
       return SliverToBoxAdapter(
         child: HolderBody(
           icon: const Icon(Icons.favorite,
               size: 36, color: AppColors.primaryColor),
           title: "No favorites yet",
           message:
-              "Add stores to your favorites by tapping the heart icon on stores you like.",
-          buttonText: "Browse Stores",
+              "Add resturants to your favorites by tapping the heart icon on resturant you like.",
+          buttonText: "Browse Resturants",
           onPressed: () {
             navProvider.changeTab(0);
           },
@@ -31,9 +32,9 @@ class FavStoresListView extends StatelessWidget {
     }
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        childCount: favStores.length,
+        childCount: favRestaurants.length,
         (context, index) {
-          return StoreItem(nearbyPlacesModel: favStores[index]);
+          return RestaurantsItem(resturantModel: favRestaurants[index]);
         },
       ),
     );

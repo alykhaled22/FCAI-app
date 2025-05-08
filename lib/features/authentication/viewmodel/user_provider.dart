@@ -2,7 +2,7 @@ import 'package:fcai_app/core/models/user_model.dart';
 import 'package:fcai_app/core/services/firebase_service.dart';
 import 'package:fcai_app/core/services/hive_service.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
-import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
+import 'package:fcai_app/features/restaurants/viewmodel/resturants_provider.dart';
 import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -112,7 +112,7 @@ class UserProvider extends ChangeNotifier {
 
   void logoutUser() async {
     await firebaseService.logoutUser();
-    StoresProvider.deleteCahcedStores();
+    RestaurantsProvider.deleteCahcedResturant();
     currentUser = UserModel.empty();
   }
 }

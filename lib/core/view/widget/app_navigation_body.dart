@@ -1,8 +1,8 @@
 import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/core/viewmodel/navigation_provider.dart';
 import 'package:fcai_app/features/authentication/viewmodel/user_provider.dart';
-import 'package:fcai_app/features/stores/view/fav_stores_view.dart';
-import 'package:fcai_app/features/stores/view/stores_view.dart';
+import 'package:fcai_app/features/restaurants/view/fav_restaurants_view.dart';
+import 'package:fcai_app/features/restaurants/view/restaurants_view.dart';
 import 'package:fcai_app/features/user_profile/view/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +19,8 @@ class _AppNavigationBodyState extends State<AppNavigationBody> {
   late PageController _pageController;
 
   final List<Widget> screens = const [
-    StoresView(),
-    FavStoresView(),
+    RestaurantsView(),
+    FavRestaurantsView(),
     UserProfile(),
   ];
 

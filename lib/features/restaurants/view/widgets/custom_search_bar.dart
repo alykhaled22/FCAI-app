@@ -1,8 +1,8 @@
 import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class SearchStoresBar extends StatelessWidget {
-  const SearchStoresBar({super.key});
+class CustomSearchBar extends StatelessWidget {
+  const CustomSearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {

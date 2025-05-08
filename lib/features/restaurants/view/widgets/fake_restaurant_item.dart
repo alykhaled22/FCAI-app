@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class FakeStoreItem extends StatelessWidget {
-  const FakeStoreItem({super.key});
+class FakeRestaurantsItem extends StatelessWidget {
+  const FakeRestaurantsItem({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,12 +1,12 @@
 import 'package:fcai_app/core/utils/helpers.dart';
-import 'package:fcai_app/features/stores/view/widgets/stores_list_view_builder.dart';
-import 'package:fcai_app/features/stores/view/widgets/stores_view_header.dart';
-import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
+import 'package:fcai_app/features/restaurants/view/widgets/restaurants_list_view_builder.dart';
+import 'package:fcai_app/features/restaurants/view/widgets/restaurants_view_header.dart';
+import 'package:fcai_app/features/restaurants/viewmodel/resturants_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class StoresView extends StatelessWidget {
-  const StoresView({super.key});
+class RestaurantsView extends StatelessWidget {
+  const RestaurantsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +14,8 @@ class StoresView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          StoresViewHeader(
-            title: "Stores",
+          RestaurantsViewHeader(
+            title: "Restaurants",
           ),
           Expanded(
             child: RefreshIndicator(
@@ -25,8 +25,9 @@ class StoresView extends StatelessWidget {
                   Duration(seconds: 1),
                   () async {
                     if (!context.mounted) return;
-                    await Provider.of<StoresProvider>(context, listen: false)
-                        .fetchAndCacheStores(context);
+                    await Provider.of<RestaurantsProvider>(context,
+                            listen: false)
+                        .fetchAndCacheRestaurants(context);
                     if (!context.mounted) return;
                     Helpers.checkInternetConnection(context);
                   },
@@ -34,7 +35,7 @@ class StoresView extends StatelessWidget {
               },
               child: CustomScrollView(
                 slivers: [
-                  StoresListViewBuilder(),
+                  RestaurantsListViewBuilder(),
                 ],
               ),
             ),

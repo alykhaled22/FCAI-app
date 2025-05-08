@@ -193,27 +193,28 @@ class _UserEditProfileState extends State<UserEditProfile> {
 
   Future<void> _handleEditProfile() async {
     if (!formKey.currentState!.validate()) return;
+    if (isDataChanged()) {
+      UserModel updatedUser = UserModel(
+        name: nameController.text.isNotEmpty
+            ? nameController.text
+            : currentUser.name,
+        id: idController.text,
+        email: emailController.text,
+        password: currentUser.password,
+        gender: selectedGender ?? currentUser.gender,
+        level: selectedLevel?.toString() ?? currentUser.level,
+        imageUrl: image != null ? image!.path : "",
+      );
 
-    UserModel updatedUser = UserModel(
-      name: nameController.text.isNotEmpty
-          ? nameController.text
-          : currentUser.name,
-      id: idController.text,
-      email: emailController.text,
-      password: currentUser.password,
-      gender: selectedGender ?? currentUser.gender,
-      level: selectedLevel?.toString() ?? currentUser.level,
-      imageUrl: image != null ? image!.path : "",
-    );
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final success = await userProvider.updateUser(updatedUser, context);
 
-    final success = await userProvider.updateUser(updatedUser, context);
+      if (!success) return;
 
-    if (!success) return;
-
-    if (!mounted) return;
-    Helpers.showSuccessSnackBar(context, "Edited successfully!");
+      if (!mounted) return;
+      Helpers.showSuccessSnackBar(context, "Edited successfully!");
+    }
     Helpers.navigateReplacmentWithSlide(
       context,
       AppNavigation(

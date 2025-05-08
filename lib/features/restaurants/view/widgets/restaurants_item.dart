@@ -1,13 +1,12 @@
-import 'package:fcai_app/core/utils/helpers.dart';
-import 'package:fcai_app/features/stores/model/store_model.dart';
-import 'package:fcai_app/features/stores/viewmodel/stores_provider.dart';
+import 'package:fcai_app/features/restaurants/model/restaurant_model.dart';
+import 'package:fcai_app/features/restaurants/viewmodel/resturants_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class StoreItem extends StatelessWidget {
-  const StoreItem({super.key, required this.nearbyPlacesModel});
+class RestaurantsItem extends StatelessWidget {
+  const RestaurantsItem({super.key, required this.resturantModel});
 
-  final StoreModel nearbyPlacesModel;
+  final RestaurantsModel resturantModel;
 
   @override
   Widget build(BuildContext context) {
@@ -18,18 +17,19 @@ class StoreItem extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
-                  Helpers.getCategoryImage(nearbyPlacesModel.category),
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover),
+              Image.network(
+                resturantModel.image,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
               SizedBox(width: 30),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      nearbyPlacesModel.name,
+                      resturantModel.name,
                       style: TextStyle(
                           overflow: TextOverflow.ellipsis,
                           fontSize: 18,
@@ -38,7 +38,7 @@ class StoreItem extends StatelessWidget {
                     ),
                     SizedBox(height: 3),
                     Text(
-                      nearbyPlacesModel.category,
+                      resturantModel.category,
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 14,
@@ -49,7 +49,7 @@ class StoreItem extends StatelessWidget {
                     ),
                     SizedBox(height: 3),
                     Text(
-                      nearbyPlacesModel.address,
+                      resturantModel.address,
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 14,
@@ -70,7 +70,7 @@ class StoreItem extends StatelessWidget {
                           width: 3,
                         ),
                         Text(
-                          "${(nearbyPlacesModel.distance / 1000).toStringAsFixed(2)} km",
+                          "${(resturantModel.distance).toStringAsFixed(2)} km",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -85,17 +85,13 @@ class StoreItem extends StatelessWidget {
               ),
               IconButton(
                 icon: Icon(
-                  nearbyPlacesModel.isFav
-                      ? Icons.favorite
-                      : Icons.favorite_border,
+                  resturantModel.isFav ? Icons.favorite : Icons.favorite_border,
                   size: 30,
                 ),
-                color:
-                    nearbyPlacesModel.isFav ? Colors.red : Colors.grey,
+                color: resturantModel.isFav ? Colors.red : Colors.grey,
                 onPressed: () {
-                   Provider.of<StoresProvider>(context, listen: false)
-                      .toggleFav(nearbyPlacesModel);
-
+                  Provider.of<RestaurantsProvider>(context, listen: false)
+                      .toggleFav(resturantModel);
                 },
               )
             ],

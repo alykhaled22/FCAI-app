@@ -1,44 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'store_model.dart';
+part of 'product_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class StoreModelAdapter extends TypeAdapter<StoreModel> {
+class ProductModelAdapter extends TypeAdapter<ProductModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
-  StoreModel read(BinaryReader reader) {
+  ProductModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return StoreModel(
+    return ProductModel(
       name: fields[0] as String,
-      address: fields[1] as String,
-      distance: fields[2] as double,
+      image: fields[1] as String,
       category: fields[3] as String,
-      isFav: fields[4] as bool,
+      price: fields[2] as double,
     );
   }
 
   @override
-  void write(BinaryWriter writer, StoreModel obj) {
+  void write(BinaryWriter writer, ProductModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.address)
+      ..write(obj.image)
       ..writeByte(2)
-      ..write(obj.distance)
+      ..write(obj.price)
       ..writeByte(3)
-      ..write(obj.category)
-      ..writeByte(4)
-      ..write(obj.isFav);
+      ..write(obj.category);
   }
 
   @override
@@ -47,7 +44,7 @@ class StoreModelAdapter extends TypeAdapter<StoreModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StoreModelAdapter &&
+      other is ProductModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
