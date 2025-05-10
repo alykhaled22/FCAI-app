@@ -8,6 +8,8 @@ import 'package:hive_flutter/adapters.dart';
 
 class RestaurantsProvider with ChangeNotifier {
   List<RestaurantModel> restaurants = [];
+  List<RestaurantModel> filteredRestaurants = [];
+  String resSearchText = '';
   bool isLoading = true;
 
   static const String boxName = "restaurant";
@@ -87,5 +89,28 @@ class RestaurantsProvider with ChangeNotifier {
     }
     final box = Hive.box<RestaurantModel>(boxName);
     box.clear();
+  }
+
+  void searchRestaurantsByProduct(String query) {
+    resSearchText = query;
+
+    if (query.isEmpty) {
+      filteredRestaurants = [];
+    } else {
+      final lowerQuery = query.toLowerCase();
+
+      filteredRestaurants = restaurants.where((restaurant) {
+        return restaurant.products.any((product) {
+          return product.name.toLowerCase().contains(lowerQuery);
+        });
+      }).toList();
+
+      if (filteredRestaurants.isEmpty) {
+        filteredRestaurants = restaurants.where((restaurant) {
+          return restaurant.name.toLowerCase().contains(lowerQuery);
+        }).toList();
+      }
+    }
+    notifyListeners();
   }
 }

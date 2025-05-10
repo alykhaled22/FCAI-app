@@ -1,5 +1,5 @@
 import 'package:fcai_app/features/products/model/product_model.dart';
-import 'package:fcai_app/features/products/view/product_item.dart';
+import 'package:fcai_app/features/products/view/widgets/product_item.dart';
 import 'package:flutter/material.dart';
 
 class ProductsListView extends StatelessWidget {

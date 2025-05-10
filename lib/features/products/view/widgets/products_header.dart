@@ -15,6 +15,11 @@ class ProductsHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios)),
         Image.network(
           imageUrl,
           fit: BoxFit.cover,

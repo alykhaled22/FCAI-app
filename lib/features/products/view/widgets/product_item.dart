@@ -2,6 +2,7 @@ import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:fcai_app/features/products/model/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductItem extends StatelessWidget {
   const ProductItem({super.key, required this.productModel});
@@ -29,10 +30,14 @@ class ProductItem extends StatelessWidget {
                   height: 120,
                   fit: BoxFit.fill,
                   imageUrl: productModel.image,
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      Center(
-                          child: CircularProgressIndicator(
-                              value: downloadProgress.progress)),
+                  placeholder: (context, url) => Skeletonizer(
+                    child: Image.asset(
+                      "assets/images/resturant.png",
+                      width: 110,
+                      height: 110,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),

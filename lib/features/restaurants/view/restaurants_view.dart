@@ -10,12 +10,14 @@ class RestaurantsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<RestaurantsProvider>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           RestaurantsViewHeader(
             title: "Restaurants",
+            onChanged: provider.searchRestaurantsByProduct,
           ),
           Expanded(
             child: RefreshIndicator(

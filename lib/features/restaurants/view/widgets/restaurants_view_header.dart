@@ -2,8 +2,9 @@ import 'package:fcai_app/core/widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 
 class RestaurantsViewHeader extends StatelessWidget {
-  const RestaurantsViewHeader({super.key, required this.title});
+  const RestaurantsViewHeader({super.key, required this.title, this.onChanged});
   final String title;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,8 @@ class RestaurantsViewHeader extends StatelessWidget {
         ),
         SizedBox(height: 15),
         CustomSearchBar(
-          hintText: 'Search restaurants...',
+          onChanged: onChanged,
+          hintText: 'Search restaurants or items...',
         ),
         SizedBox(height: 25),
       ],

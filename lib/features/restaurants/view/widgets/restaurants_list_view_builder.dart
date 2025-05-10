@@ -16,8 +16,13 @@ class RestaurantsListViewBuilder extends StatelessWidget {
         if (provider.isLoading) {
           return LoadingResturantsView();
         } else if (provider.restaurants.isNotEmpty) {
+          final displayedRestaurants =
+              provider.filteredRestaurants.isNotEmpty ||
+                      provider.resSearchText.isNotEmpty
+                  ? provider.filteredRestaurants
+                  : provider.restaurants;
           return RestaurantsListView(
-            restaurantsModel: provider.restaurants,
+            restaurantsModel: displayedRestaurants,
           );
         } else {
           return SliverToBoxAdapter(
