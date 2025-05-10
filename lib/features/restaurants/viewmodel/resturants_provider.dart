@@ -7,17 +7,17 @@ import 'package:geolocator/geolocator.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class RestaurantsProvider with ChangeNotifier {
-  List<RestaurantsModel> restaurants = [];
+  List<RestaurantModel> restaurants = [];
   bool isLoading = true;
 
   static const String boxName = "restaurant";
 
   Future<void> init(BuildContext context) async {
     if (!Hive.isBoxOpen(boxName)) {
-      await Hive.openBox<RestaurantsModel>(boxName);
+      await Hive.openBox<RestaurantModel>(boxName);
     }
 
-    final box = Hive.box<RestaurantsModel>(boxName);
+    final box = Hive.box<RestaurantModel>(boxName);
 
     if (box.isNotEmpty) {
       restaurants = box.values.toList();
@@ -49,10 +49,10 @@ class RestaurantsProvider with ChangeNotifier {
           .fetchNearbyRestaurants(latitude, longitude);
 
       if (!Hive.isBoxOpen(boxName)) {
-        await Hive.openBox<RestaurantsModel>(boxName);
+        await Hive.openBox<RestaurantModel>(boxName);
       }
 
-      final box = Hive.box<RestaurantsModel>(boxName);
+      final box = Hive.box<RestaurantModel>(boxName);
       await box.clear();
 
       for (var store in response) {
@@ -66,12 +66,12 @@ class RestaurantsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<RestaurantsModel> get favRestaurants {
+  List<RestaurantModel> get favRestaurants {
     return restaurants.where((store) => store.isFav).toList();
   }
 
-  void toggleFav(RestaurantsModel restaurant) {
-    final box = Hive.box<RestaurantsModel>(boxName);
+  void toggleFav(RestaurantModel restaurant) {
+    final box = Hive.box<RestaurantModel>(boxName);
 
     final index = restaurants.indexOf(restaurant);
     if (index != -1) {
@@ -83,9 +83,9 @@ class RestaurantsProvider with ChangeNotifier {
 
   static void deleteCahcedResturant() async {
     if (!Hive.isBoxOpen(boxName)) {
-      await Hive.openBox<RestaurantsModel>(boxName);
+      await Hive.openBox<RestaurantModel>(boxName);
     }
-    final box = Hive.box<RestaurantsModel>(boxName);
+    final box = Hive.box<RestaurantModel>(boxName);
     box.clear();
   }
 }

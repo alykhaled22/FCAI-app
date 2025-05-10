@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 part 'restaurant_model.g.dart';
 
 @HiveType(typeId: 1)
-class RestaurantsModel extends HiveObject {
+class RestaurantModel extends HiveObject {
   @HiveField(0)
   final String name;
   @HiveField(1)
@@ -24,7 +24,7 @@ class RestaurantsModel extends HiveObject {
   @HiveField(8)
   final List<ProductModel> products;
 
-  RestaurantsModel({
+  RestaurantModel({
     required this.name,
     required this.address,
     required this.distance,
@@ -36,8 +36,8 @@ class RestaurantsModel extends HiveObject {
     this.isFav = false,
   });
 
-  factory RestaurantsModel.fromJson(json) {
-    return RestaurantsModel(
+  factory RestaurantModel.fromJson(json) {
+    return RestaurantModel(
       name: json['name'] ?? "",
       address: json["address"] ?? "",
       distance: (json['distance_km'] ?? 0.0) as double,

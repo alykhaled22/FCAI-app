@@ -1,4 +1,4 @@
-import 'package:fcai_app/features/restaurants/view/widgets/custom_search_bar.dart';
+import 'package:fcai_app/core/widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 
 class RestaurantsViewHeader extends StatelessWidget {
@@ -22,7 +22,9 @@ class RestaurantsViewHeader extends StatelessWidget {
           ),
         ),
         SizedBox(height: 15),
-        CustomSearchBar(),
+        CustomSearchBar(
+          hintText: 'Search restaurants...',
+        ),
         SizedBox(height: 25),
       ],
     );

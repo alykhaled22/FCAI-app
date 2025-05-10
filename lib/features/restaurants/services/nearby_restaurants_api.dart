@@ -6,18 +6,18 @@ class NearbyRestaurantsApi {
 
   NearbyRestaurantsApi({required this.dio});
 
-  Future<List<RestaurantsModel>> fetchNearbyRestaurants(
+  Future<List<RestaurantModel>> fetchNearbyRestaurants(
       double latitude, double longitude) async {
     try {
       final response = await dio.get(
         'https://fcai-server-production.up.railway.app/places?user_lat=$latitude&user_lon=$longitude',
       );
 
-      List<RestaurantsModel> nearbyRestaurantsList = [];
+      List<RestaurantModel> nearbyRestaurantsList = [];
       final restaurants = response.data;
 
       for (var resturant in restaurants) {
-        nearbyRestaurantsList.add(RestaurantsModel.fromJson(resturant));
+        nearbyRestaurantsList.add(RestaurantModel.fromJson(resturant));
       }
 
       return nearbyRestaurantsList;

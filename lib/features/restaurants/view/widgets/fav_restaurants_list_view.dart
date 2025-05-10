@@ -22,8 +22,8 @@ class FavRestaurantsListView extends StatelessWidget {
               size: 36, color: AppColors.primaryColor),
           title: "No favorites yet",
           message:
-              "Add resturants to your favorites by tapping the heart icon on resturant you like.",
-          buttonText: "Browse Resturants",
+              "Add restaurants to your favorites by tapping the heart icon on restaurants you like.",
+          buttonText: "Browse Restaurants",
           onPressed: () {
             navProvider.changeTab(0);
           },
@@ -34,7 +34,7 @@ class FavRestaurantsListView extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         childCount: favRestaurants.length,
         (context, index) {
-          return RestaurantsItem(resturantModel: favRestaurants[index]);
+          return RestaurantsItem(restaurantModel: favRestaurants[index]);
         },
       ),
     );

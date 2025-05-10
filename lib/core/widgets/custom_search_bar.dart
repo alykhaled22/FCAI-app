@@ -2,7 +2,8 @@ import 'package:fcai_app/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomSearchBar extends StatelessWidget {
-  const CustomSearchBar({super.key});
+  const CustomSearchBar({super.key, required this.hintText});
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class CustomSearchBar extends StatelessWidget {
         ),
         child: TextField(
           decoration: InputDecoration(
-            hintText: 'Search stores...',
+            hintText: hintText,
             prefixIcon: const Icon(Icons.search),
             border: InputBorder.none,
             contentPadding:

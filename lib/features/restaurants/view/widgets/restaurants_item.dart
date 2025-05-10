@@ -1,12 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fcai_app/features/restaurants/model/restaurant_model.dart';
 import 'package:fcai_app/features/restaurants/viewmodel/resturants_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RestaurantsItem extends StatelessWidget {
-  const RestaurantsItem({super.key, required this.resturantModel});
+  const RestaurantsItem({super.key, required this.restaurantModel});
 
-  final RestaurantsModel resturantModel;
+  final RestaurantModel restaurantModel;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +18,15 @@ class RestaurantsItem extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(
-                resturantModel.image,
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: CachedNetworkImage(
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                  imageUrl: restaurantModel.image,
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
               SizedBox(width: 30),
               Expanded(
@@ -29,7 +34,7 @@ class RestaurantsItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      resturantModel.name,
+                      restaurantModel.name,
                       style: TextStyle(
                           overflow: TextOverflow.ellipsis,
                           fontSize: 18,
@@ -38,7 +43,7 @@ class RestaurantsItem extends StatelessWidget {
                     ),
                     SizedBox(height: 3),
                     Text(
-                      resturantModel.category,
+                      restaurantModel.category,
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 14,
@@ -49,7 +54,7 @@ class RestaurantsItem extends StatelessWidget {
                     ),
                     SizedBox(height: 3),
                     Text(
-                      resturantModel.address,
+                      restaurantModel.address,
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 14,
@@ -70,7 +75,7 @@ class RestaurantsItem extends StatelessWidget {
                           width: 3,
                         ),
                         Text(
-                          "${(resturantModel.distance).toStringAsFixed(2)} km",
+                          "${(restaurantModel.distance).toStringAsFixed(2)} km",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -85,13 +90,15 @@ class RestaurantsItem extends StatelessWidget {
               ),
               IconButton(
                 icon: Icon(
-                  resturantModel.isFav ? Icons.favorite : Icons.favorite_border,
+                  restaurantModel.isFav
+                      ? Icons.favorite
+                      : Icons.favorite_border,
                   size: 30,
                 ),
-                color: resturantModel.isFav ? Colors.red : Colors.grey,
+                color: restaurantModel.isFav ? Colors.red : Colors.grey,
                 onPressed: () {
                   Provider.of<RestaurantsProvider>(context, listen: false)
-                      .toggleFav(resturantModel);
+                      .toggleFav(restaurantModel);
                 },
               )
             ],

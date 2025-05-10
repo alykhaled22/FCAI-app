@@ -6,17 +6,17 @@ part of 'restaurant_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class RestaurantsModelAdapter extends TypeAdapter<RestaurantsModel> {
+class RestaurantsModelAdapter extends TypeAdapter<RestaurantModel> {
   @override
   final int typeId = 1;
 
   @override
-  RestaurantsModel read(BinaryReader reader) {
+  RestaurantModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return RestaurantsModel(
+    return RestaurantModel(
       name: fields[0] as String,
       address: fields[1] as String,
       distance: fields[2] as double,
@@ -30,7 +30,7 @@ class RestaurantsModelAdapter extends TypeAdapter<RestaurantsModel> {
   }
 
   @override
-  void write(BinaryWriter writer, RestaurantsModel obj) {
+  void write(BinaryWriter writer, RestaurantModel obj) {
     writer
       ..writeByte(9)
       ..writeByte(0)
