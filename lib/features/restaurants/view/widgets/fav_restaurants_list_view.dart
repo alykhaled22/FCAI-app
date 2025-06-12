@@ -11,8 +11,9 @@ class FavRestaurantsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final favRestaurants =
-        Provider.of<RestaurantsProvider>(context).favRestaurants;
+    final provider = Provider.of<RestaurantsProvider>(context);
+    final favRestaurants = provider.favRestaurants;
+
     final navProvider = Provider.of<NavigationProvider>(context);
 
     if (favRestaurants.isEmpty) {

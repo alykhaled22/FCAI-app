@@ -20,9 +20,7 @@ class ProductsViewBody extends StatelessWidget {
         children: [
           const SizedBox(height: 30),
           ProductsHeader(
-            title: restaurantModel.name,
-            imageUrl: restaurantModel.image,
-            address: restaurantModel.address,
+            restaurantModel: restaurantModel,
           ),
           SizedBox(height: 30),
           CustomSearchBar(

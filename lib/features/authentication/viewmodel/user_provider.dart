@@ -99,7 +99,7 @@ class UserProvider extends ChangeNotifier {
     final connection =
         await Helpers.checkInternetConnection(context, showMsg: false);
     if (!connection) {
-      currentUser = await firebaseService.loadCachedUser();
+      currentUser = await HiveService.loadCachedUser();
     } else {
       if (!context.mounted) return;
       final userModel = await firebaseService.getCurrentUser(context);

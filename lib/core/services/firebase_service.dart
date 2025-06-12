@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fcai_app/core/models/user_model.dart';
+import 'package:fcai_app/core/services/hive_service.dart';
 import 'package:fcai_app/core/utils/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class FirebaseService {
   final FirebaseAuth userAuth = FirebaseAuth.instance;
@@ -48,14 +48,7 @@ class FirebaseService {
     return null;
   }
 
-  Future<void> chaceUesrData(UserModel user) async {
-    if (!Hive.isBoxOpen("user")) {
-      await Hive.openBox<UserModel>("user");
-    }
-    final box = Hive.box<UserModel>("user");
-    await box.clear();
-    await box.add(user);
-  }
+
 
   Future<UserModel?> getCurrentUser(BuildContext context) async {
     final user = FirebaseAuth.instance.currentUser;
@@ -78,18 +71,11 @@ class FirebaseService {
       level: data['level'] ?? "",
       imageUrl: data['imageUrl'] ?? "",
     );
-    await chaceUesrData(userModel);
+    await HiveService.chaceUesrData(userModel);
     return userModel;
   }
 
-  Future<UserModel> loadCachedUser() async {
-    if (!Hive.isBoxOpen("user")) {
-      await Hive.openBox<UserModel>("user");
-    }
-    final box = Hive.box<UserModel>("user");
-    if (box.isEmpty) return UserModel.empty();
-    return box.getAt(0)!;
-  }
+ 
 
   Future<bool> updateUserData(UserModel user, BuildContext context) async {
     try {
@@ -104,7 +90,7 @@ class FirebaseService {
         "level": user.level,
         "gender": user.gender,
       });
-      chaceUesrData(user);
+      HiveService.chaceUesrData(user);
       return true;
     } catch (e) {
       return false;

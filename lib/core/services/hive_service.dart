@@ -31,4 +31,22 @@ class HiveService<T> {
   Future<void> deleteData({required Box<T> box, required String key}) async {
     await box.delete(key);
   }
+
+  static Future<void> chaceUesrData(UserModel user) async {
+    if (!Hive.isBoxOpen("user")) {
+      await Hive.openBox<UserModel>("user");
+    }
+    final box = Hive.box<UserModel>("user");
+    await box.clear();
+    await box.add(user);
+  }
+
+  static Future<UserModel> loadCachedUser() async {
+    if (!Hive.isBoxOpen("user")) {
+      await Hive.openBox<UserModel>("user");
+    }
+    final box = Hive.box<UserModel>("user");
+    if (box.isEmpty) return UserModel.empty();
+    return box.getAt(0)!;
+  }
 }
